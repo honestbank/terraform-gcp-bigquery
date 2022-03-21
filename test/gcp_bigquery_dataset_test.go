@@ -23,7 +23,7 @@ func TestGCPBigQueryDataset(t *testing.T) {
 	credentials := os.Getenv("TF_VAR_google_credentials")
 
 	t.Run("success", func(t *testing.T) {
-		options := getOptions(t, testStructure.CopyTerraformFolderToTemp(t, "..", "example"))
+		options := getOptions(t, testStructure.CopyTerraformFolderToTemp(t, "..", "example/create_dataset"))
 
 		defer terraform.Destroy(t, options)
 

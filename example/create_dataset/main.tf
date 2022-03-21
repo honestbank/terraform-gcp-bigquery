@@ -16,7 +16,7 @@ terraform {
 }
 
 module "crate_bigquery_dataset" {
-  source      = "../modules/gcp_bigquery_dataset"
+  source      = "../../modules/gcp_bigquery_dataset"
   name        = "dataset"
   description = "dataset's description"
   location    = "asia-southeast2"
