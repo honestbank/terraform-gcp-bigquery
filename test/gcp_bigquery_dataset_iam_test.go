@@ -12,20 +12,14 @@ import (
 	"google.golang.org/api/option"
 )
 
-func getOptions(t *testing.T, directory string) *terraform.Options {
-	return terraform.WithDefaultRetryableErrors(t, &terraform.Options{
-		TerraformDir: directory,
-	})
-}
-
-func TestGCPBigQueryDataset(t *testing.T) {
+func TestGCPBigQueryDatasetIAM(t *testing.T) {
 	projectName := os.Getenv("TF_VAR_google_project")
 	credentials := os.Getenv("TF_VAR_google_credentials")
 
 	t.Run("success", func(t *testing.T) {
 		t.Parallel()
 
-		options := getOptions(t, testStructure.CopyTerraformFolderToTemp(t, "..", "example/create_dataset"))
+		options := getOptions(t, testStructure.CopyTerraformFolderToTemp(t, "..", "example/attach_iam_to_dataset"))
 
 		defer terraform.Destroy(t, options)
 
