@@ -1,3 +1,5 @@
+This module is using for create BigQuery dataset on Google Cloud.
+
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
 
@@ -45,6 +47,7 @@ No modules.
 
 | Name | Description |
 |------|-------------|
+| <a name="output_customer_managed_key_id"></a> [customer\_managed\_key\_id](#output\_customer\_managed\_key\_id) | n/a |
 | <a name="output_id"></a> [id](#output\_id) | n/a |
 | <a name="output_self_link"></a> [self\_link](#output\_self\_link) | n/a |
 <!-- END_TF_DOCS -->
