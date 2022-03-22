@@ -21,7 +21,7 @@ variable "schema" {
 
 variable "deletion_protection" {
   type        = bool
-  description = "Whether or not to allow Terraform to destroy the instance. Unless this field is set to false in Terraform state, a terraform destroy or terraform apply that would delete the instance will fail."
+  description = "Whether or not to prevent Terraform from destroying the instance."
 }
 
 variable "customer_managed_key_id" {
