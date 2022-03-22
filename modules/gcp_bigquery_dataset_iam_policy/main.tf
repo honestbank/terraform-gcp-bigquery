@@ -14,7 +14,7 @@ resource "google_bigquery_dataset_iam_member" "google_bigquery_dataset_iam_membe
 }
 
 resource "google_kms_crypto_key_iam_member" "google_kms_crypto_key_iam_member" {
-  crypto_key_id = var.customer_key_id
+  crypto_key_id = var.customer_managed_key_id
   role          = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
   member        = var.member
 }

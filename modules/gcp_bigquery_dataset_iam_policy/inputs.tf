@@ -13,7 +13,7 @@ variable "role" {
   description = "The role that should be applied. Only one google_bigquery_dataset_iam_binding can be used per role. Note that custom roles must be of the format [projects|organizations]/{parent-name}/roles/{role-name}."
 }
 
-variable "customer_key_id" {
+variable "customer_managed_key_id" {
   type        = string
   description = "The crypto key ID, in the form {project_id}/{location_name}/{key_ring_name}/{crypto_key_name} or {location_name}/{key_ring_name}/{crypto_key_name}. In the second form, the provider's project setting will be used as a fallback."
 }

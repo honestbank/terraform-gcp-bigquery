@@ -39,10 +39,10 @@ resource "google_service_account" "viewer" {
 module "attach_viewer_to_dataset" {
   source = "../../modules/gcp_bigquery_dataset_iam_policy"
 
-  customer_key_id = module.create_bigquery_dataset.customer_key_id
-  dataset_id      = module.create_bigquery_dataset.id
-  member          = "serviceAccount:${google_service_account.viewer.email}"
-  role            = "roles/bigquery.dataViewer"
+  customer_managed_key_id = module.create_bigquery_dataset.customer_managed_key_id
+  dataset_id              = module.create_bigquery_dataset.id
+  member                  = "serviceAccount:${google_service_account.viewer.email}"
+  role                    = "roles/bigquery.dataViewer"
 }
 
 resource "google_service_account" "editor" {
@@ -53,8 +53,8 @@ resource "google_service_account" "editor" {
 module "attach_editor_to_dataset" {
   source = "../../modules/gcp_bigquery_dataset_iam_policy"
 
-  customer_key_id = module.create_bigquery_dataset.customer_key_id
-  dataset_id      = module.create_bigquery_dataset.id
-  member          = "serviceAccount:${google_service_account.editor.email}"
-  role            = "roles/bigquery.dataEditor"
+  customer_managed_key_id = module.create_bigquery_dataset.customer_managed_key_id
+  dataset_id              = module.create_bigquery_dataset.id
+  member                  = "serviceAccount:${google_service_account.editor.email}"
+  role                    = "roles/bigquery.dataEditor"
 }
