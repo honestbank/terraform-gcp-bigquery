@@ -5,7 +5,7 @@ variable "google_project" {
 
 variable "google_credentials" {
   type        = string
-  description = "JSON GCP IAM credentials that have BigQuery Owner Role granted"
+  description = "JSON GCP IAM credentials that have GCP Owner and BigQuery Admin Role granted"
 }
 
 provider "google" {
