@@ -20,7 +20,7 @@ resource "google_service_account" "owner" {
   display_name = "dataset_owner"
 }
 
-module "crate_bigquery_dataset" {
+module "create_bigquery_dataset" {
   source      = "../../modules/gcp_bigquery_dataset"
   name        = "dataset"
   description = "dataset's description"

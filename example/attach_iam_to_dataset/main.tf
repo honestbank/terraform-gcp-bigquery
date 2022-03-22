@@ -20,7 +20,7 @@ resource "google_service_account" "owner" {
   display_name = "dataset_owner"
 }
 
-module "crate_bigquery_dataset" {
+module "create_bigquery_dataset" {
   source = "../../modules/gcp_bigquery_dataset"
 
   name        = "dataset"
@@ -39,8 +39,8 @@ resource "google_service_account" "viewer" {
 module "attach_viewer_to_dataset" {
   source = "../../modules/gcp_bigquery_dataset_iam_policy"
 
-  customer_key_id = module.crate_bigquery_dataset.customer_key_id
-  dataset_id      = module.crate_bigquery_dataset.id
+  customer_key_id = module.create_bigquery_dataset.customer_key_id
+  dataset_id      = module.create_bigquery_dataset.id
   member          = "serviceAccount:${google_service_account.viewer.email}"
   role            = "roles/bigquery.dataViewer"
 }
@@ -53,8 +53,8 @@ resource "google_service_account" "editor" {
 module "attach_editor_to_dataset" {
   source = "../../modules/gcp_bigquery_dataset_iam_policy"
 
-  customer_key_id = module.crate_bigquery_dataset.customer_key_id
-  dataset_id      = module.crate_bigquery_dataset.id
+  customer_key_id = module.create_bigquery_dataset.customer_key_id
+  dataset_id      = module.create_bigquery_dataset.id
   member          = "serviceAccount:${google_service_account.editor.email}"
   role            = "roles/bigquery.dataEditor"
 }
