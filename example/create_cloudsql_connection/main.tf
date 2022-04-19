@@ -32,7 +32,7 @@ variable "database_name" {
 }
 
 variable "user_name" {
-  default     = "mysql-user"
+  default     = "github-terratest@test-terraform-project-01.iam.gserviceaccount.com"
   description = "username for cloudsql"
 }
 variable "database_instance_id" {
