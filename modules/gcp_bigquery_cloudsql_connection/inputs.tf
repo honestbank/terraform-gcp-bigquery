@@ -16,7 +16,7 @@ variable "description" {
 }
 
 variable "database_instance_id" {
-  description = "ID of the CloudSQL INSTANCE. Note: not the database inside the instance, but the instance."
+  description = "ID of the CloudSQL INSTANCE. Note: not the database inside the instance, but the instance. Note: it has to be formatted as project:zone:database_id"
   type        = string
 }
 

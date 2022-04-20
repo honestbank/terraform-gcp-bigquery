@@ -11,49 +11,7 @@ terraform {
   }
 }
 
-variable "settings_tier" {
-  default     = "db-f1-micro"
-  description = "instance type fo the cloudsql"
-}
 
-variable "settings_backup_configuration_binary_log_enabled" {
-  default     = true
-  description = "backup log enablement cloudsql"
-}
-
-variable "settings_availability_type" {
-  default     = "ZONAL"
-  description = "select between zonal, regional"
-}
-
-variable "database_name" {
-  default     = ""
-  description = "Database name for bigquery cloudsql connection, keep in mind one database per connection"
-}
-
-variable "user_name" {
-  default     = "github-terratest@test-terraform-project-01.iam.gserviceaccount.com"
-  description = "username for cloudsql"
-}
-variable "database_instance_id" {
-  default     = ""
-  description = "Database name for bigquery cloudsql connection, keep in mind one database per connection"
-}
-
-variable "settings_backup_configuration_enabled" {
-  default     = true
-  description = "Database backup enable"
-}
-
-variable "user_type" {
-  default     = "CLOUD_IAM_SERVICE_ACCOUNT"
-  description = "choose between CLOUD_IAM_SERVICE_ACCOUNT or CLOUD_IAM_USER or BUILD_IN"
-}
-
-variable "gcp_region" {
-  default     = "asia-southeast2"
-  description = "Default region for gcp project"
-}
 resource "random_id" "random_id" {
   byte_length = 8
 }
@@ -138,7 +96,7 @@ module "sql_database_instance" {
   settings_tier       = var.settings_tier
   deletion_protection = false
 
-  enable_read_replica                                 = true
+  enable_read_replica                                 = false
   read_replica_settings_ip_configuration_ipv4_enabled = true
   read_replica_settings_tier                          = var.settings_tier
 }
@@ -157,15 +115,22 @@ module "sql_database" {
 module "sql_user" {
   source = "../../modules/terraform-gcp-sql/modules/google_sql_user"
 
-  # depends_on = [
-  #   module.google_sql_database_instance
-  # ]
+
 
   instance_name = module.sql_database_instance.instance_name
   name          = var.user_name
   password      = random_id.random_string.hex
   host          = "%"
   type          = var.user_type
+
+  depends_on = [
+    module.sql_database_instance
+  ]
+}
+
+locals {
+  # Note: resource google_bigquery_connection requires this specific formatting
+  db_instance_name_formatted = "${var.google_project}:${var.gcp_region}:${module.sql_database_instance.instance_name}"
 }
 
 module "connection" {
@@ -174,9 +139,9 @@ module "connection" {
     google-beta = google-beta
   }
   depends_on           = [module.sql_user]
-  connection_id        = "bigquery-connection-random_id.instance_suffix.hex-for-test"
+  connection_id        = "super-hackers"
   description          = "we're h@k3rs"
-  database_instance_id = module.sql_database_instance.read_replica_connection_name
+  database_instance_id = local.db_instance_name_formatted
   database_name        = var.database_name
   sql_user_credentials = {
     user_name : var.user_name

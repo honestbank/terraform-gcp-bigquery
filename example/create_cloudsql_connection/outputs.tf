@@ -88,7 +88,7 @@ output "sql_database_instance_read_replica_self_link" {
   value       = module.sql_database_instance.read_replica_self_link
 }
 
-output "sql_database_instance_read_replica_service_account_email_address" {
+output "sql_database_instance_read_replicbigquery_connection_linka_service_account_email_address" {
   description = "The service account email address assigned to the instance."
   value       = module.sql_database_instance.read_replica_service_account_email_address
 }
@@ -113,7 +113,7 @@ output "sql_database_instance_read_replica_first_ip_address" {
 #   value       = module.sql_database_instance.read_replica_public_ip_address
 # }
 
-# output "bigquery_connection_link" {
-#   description = "The name of bigquery to read replica connection "
-#   value       = module.honest_bigquery_connection.
-# }
+output "bigquery_connection_link" {
+  description = "The name of bigquery to read replica connection "
+  value       = module.connection.bigquery_connection_link
+}

@@ -15,6 +15,9 @@ import (
 func getOptions(t *testing.T, directory string) *terraform.Options {
 	return terraform.WithDefaultRetryableErrors(t, &terraform.Options{
 		TerraformDir: directory,
+		EnvVars: map[string]string{
+			"TF_LOG": "TRACE",
+		},
 	})
 }
 
