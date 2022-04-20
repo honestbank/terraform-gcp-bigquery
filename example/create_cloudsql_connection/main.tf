@@ -1,17 +1,3 @@
-terraform {
-  required_providers {
-    google = {
-      source  = "hashicorp/google"
-      version = "~> 4.13.0"
-    }
-    random = {
-      source  = "hashicorp/random"
-      version = "3.1.2"
-    }
-  }
-}
-
-
 resource "random_id" "random_id" {
   byte_length = 8
 }
@@ -114,8 +100,6 @@ module "sql_database" {
 
 module "sql_user" {
   source = "../../modules/terraform-gcp-sql/modules/google_sql_user"
-
-
 
   instance_name = module.sql_database_instance.instance_name
   name          = var.user_name

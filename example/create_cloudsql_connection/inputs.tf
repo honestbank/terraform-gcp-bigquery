@@ -1,8 +1,4 @@
-variable "database_gcp_project" {
-  type        = string
-  default     = "jose-test-review"
-  description = "Project to build the database in, not the big query connection."
-}
+
 
 variable "settings_tier" {
   default     = "db-f1-micro"
