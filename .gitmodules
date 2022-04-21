@@ -1,0 +1,3 @@
+[submodule "modules/terraform-gcp-sql"]
+	path = modules/terraform-gcp-sql
+	url = https://github.com/honestbank/terraform-gcp-sql.git
