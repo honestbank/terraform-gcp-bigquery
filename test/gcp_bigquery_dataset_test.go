@@ -25,7 +25,7 @@ func TestGCPBigQueryDataset(t *testing.T) {
 	t.Run("success", func(t *testing.T) {
 		t.Parallel()
 
-		options := getOptions(t, testStructure.CopyTerraformFolderToTemp(t, "..", "example/create_dataset"))
+		options := getOptions(t, testStructure.CopyTerraformFolderToTemp(t, "..", "examples/create_dataset"))
 
 		defer terraform.Destroy(t, options)
 

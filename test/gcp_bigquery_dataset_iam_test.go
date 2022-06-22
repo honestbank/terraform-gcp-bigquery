@@ -19,7 +19,7 @@ func TestGCPBigQueryDatasetIAM(t *testing.T) {
 	t.Run("success", func(t *testing.T) {
 		t.Parallel()
 
-		options := getOptions(t, testStructure.CopyTerraformFolderToTemp(t, "..", "example/attach_iam_to_dataset"))
+		options := getOptions(t, testStructure.CopyTerraformFolderToTemp(t, "..", "examples/attach_iam_to_dataset"))
 
 		defer terraform.Destroy(t, options)
 
