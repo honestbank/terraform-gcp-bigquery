@@ -25,6 +25,7 @@ resource "google_kms_key_ring" "google_kms_key_ring" {
 }
 
 resource "google_kms_crypto_key" "google_kms_crypto_key" {
+  #checkov:skip=CKV_GCP_82:Need to be able to delete because of integration test
   name            = "${var.name}_${random_id.random_id.hex}"
   key_ring        = google_kms_key_ring.google_kms_key_ring.id
   rotation_period = "7776000s"
@@ -50,7 +51,7 @@ resource "google_kms_crypto_key_iam_member" "google_kms_crypto_key_iam_member" {
 resource "google_bigquery_dataset" "google_bigquery_dataset" {
   depends_on = [google_kms_crypto_key_iam_member.google_kms_crypto_key_iam_member]
 
-  dataset_id    = "${var.name}_${random_id.random_id.hex}"
+  dataset_id    = var.name
   friendly_name = var.name
   description   = var.description
   location      = var.location
