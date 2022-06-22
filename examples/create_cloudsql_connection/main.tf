@@ -12,7 +12,7 @@ resource "google_service_account" "owner" {
 module "bigquery_dataset" {
   source = "../../modules/gcp_bigquery_dataset"
   // name of the dataset, this will have run number as suffix but the friendly name will be exactly what we set
-  name = "dataset"
+  name = "dataset_${random_id.random_id.hex}"
   // description describe the dataset
   description = "dataset's description"
   // location of the resource which here is Jakarta
