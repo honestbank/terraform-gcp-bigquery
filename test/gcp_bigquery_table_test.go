@@ -20,7 +20,7 @@ func TestGCPBigQueryTable(t *testing.T) {
 		t.Parallel()
 
 		options := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
-			TerraformDir: testStructure.CopyTerraformFolderToTemp(t, "..", "example/create_table"),
+			TerraformDir: testStructure.CopyTerraformFolderToTemp(t, "..", "examples/create_table"),
 		})
 
 		defer terraform.Destroy(t, options)
