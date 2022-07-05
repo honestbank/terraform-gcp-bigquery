@@ -5,7 +5,7 @@ This module is using for create BigQuery dataset with expirable tables which wil
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_google"></a> [google](#requirement\_google) | ~> 4.13.0 |
+| <a name="requirement_google"></a> [google](#requirement\_google) | >= 4.13.0 |
 | <a name="requirement_random"></a> [random](#requirement\_random) | 3.1.2 |
 | <a name="requirement_time"></a> [time](#requirement\_time) | 0.7.2 |
 
