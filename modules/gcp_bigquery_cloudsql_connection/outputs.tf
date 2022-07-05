@@ -4,5 +4,6 @@ output "bigquery_connection_link" {
 }
 
 output "id" {
-  value = google_bigquery_connection.connection.connection_id
+  description = "The reference ID of the created resource"
+  value       = google_bigquery_connection.connection.connection_id
 }
