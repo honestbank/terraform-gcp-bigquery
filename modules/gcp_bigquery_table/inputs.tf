@@ -28,3 +28,11 @@ variable "customer_managed_key_id" {
   type        = string
   description = "Describes the Cloud KMS encryption key that will be used to protect destination BigQuery table. The BigQuery Service Account associated with your project requires access to this encryption key."
 }
+
+variable "materialized_view" {
+  type = set(object({
+    query = string
+  }))
+  description = "create view for table"
+  default     = []
+}

@@ -219,4 +219,8 @@ module "create_bigquery_table_2" {
 EOF
   // customer managed key that dataset is created
   customer_managed_key_id = module.create_bigquery_dataset.customer_managed_key_id
+
+  materialized_view = [{
+    query = "SELECT * FROM service__table_name_1"
+  }]
 }
