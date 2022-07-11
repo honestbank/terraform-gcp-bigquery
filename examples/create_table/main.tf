@@ -22,7 +22,7 @@ resource "google_service_account" "owner" {
 }
 
 // creating the BigQuery dataset at Jakarta
-module "create_bigquery_dataset" {
+module "bigquery_dataset" {
   source = "../../modules/gcp_bigquery_dataset"
   // name of the dataset, this will have run number as suffix but the friendly name will be exactly what we set
   name = "dataset_${random_id.random_id.hex}"
@@ -37,10 +37,10 @@ module "create_bigquery_dataset" {
 }
 
 // creating the BigQuery table
-module "create_bigquery_table_1" {
+module "bigquery_table_1" {
   source = "../../modules/gcp_bigquery_table"
   // dataset id that this table will be created in
-  dataset_id = module.create_bigquery_dataset.id
+  dataset_id = module.bigquery_dataset.id
   // name of this table, the table name will be name with run number, but the friendly name will be the same with what we set here
   name = "service__table_name_1"
   // description of the table
@@ -48,14 +48,14 @@ module "create_bigquery_table_1" {
   // protect terraform from deleting the resource, set to false in this example because the test will need to be able to destroy it
   deletion_protection = false
   // customer managed key that dataset is created
-  customer_managed_key_id = module.create_bigquery_dataset.customer_managed_key_id
+  customer_managed_key_id = module.bigquery_dataset.customer_managed_key_id
 }
 
 // creating the BigQuery table with Schema
-module "create_bigquery_table_2" {
+module "bigquery_table_2" {
   source = "../../modules/gcp_bigquery_table"
   // dataset id that this table will be created in
-  dataset_id = module.create_bigquery_dataset.id
+  dataset_id = module.bigquery_dataset.id
   // name of this table, the table name will be name with run number, but the friendly name will be the same with what we set here
   name = "service__table_name_2"
   // description of the table
@@ -218,5 +218,19 @@ module "create_bigquery_table_2" {
 ]
 EOF
   // customer managed key that dataset is created
-  customer_managed_key_id = module.create_bigquery_dataset.customer_managed_key_id
+  customer_managed_key_id = module.bigquery_dataset.customer_managed_key_id
+}
+
+module "bigquery_table_2_materialized_view" {
+  source = "../../modules/gcp_bigquery_materialized_view"
+  // dataset id that this table will be created in
+  dataset_id = module.bigquery_dataset.id
+  // name of this table, the table name will be name with run number, but the friendly name will be the same with what we set here
+  name = "service__materialized_view_name_2"
+  // description of the table
+  description = "materialized view descriptions"
+  // protect terraform from deleting the resource, set to false in this example because the test will need to be able to destroy it
+  deletion_protection = false
+
+  query = "SELECT * FROM ${module.bigquery_dataset.id}.${module.bigquery_table_2.id}"
 }

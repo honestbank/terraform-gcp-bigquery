@@ -5,7 +5,7 @@ This module is using for attach IAM into the BigQuery dataset
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_google"></a> [google](#requirement\_google) | ~> 4.13.0 |
+| <a name="requirement_google"></a> [google](#requirement\_google) | >= 4.13.0 |
 
 ## Providers
 

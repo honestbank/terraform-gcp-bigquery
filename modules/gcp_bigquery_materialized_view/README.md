@@ -1,4 +1,4 @@
-This module is using for create BigQuery table
+This module is using for create BigQuery Materialized View (https://cloud.google.com/bigquery/docs/materialized-views-intro)
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
