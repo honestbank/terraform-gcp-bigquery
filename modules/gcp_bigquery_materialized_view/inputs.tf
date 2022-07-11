@@ -24,7 +24,7 @@ variable "deletion_protection" {
   description = "Whether or not to prevent Terraform from destroying the instance."
 }
 
-variable "customer_managed_key_id" {
+variable "query" {
   type        = string
-  description = "Describes the Cloud KMS encryption key that will be used to protect destination BigQuery table. The BigQuery Service Account associated with your project requires access to this encryption key."
+  description = "(Required) A query that BigQuery executes and persist the data in cache"
 }
