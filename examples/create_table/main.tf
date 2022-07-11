@@ -221,6 +221,24 @@ EOF
   customer_managed_key_id = module.bigquery_dataset.customer_managed_key_id
 }
 
+module "bigquery_table_2_materialized_view" {
+  source = "../../modules/gcp_bigquery_table"
+  // dataset id that this table will be created in
+  dataset_id = module.bigquery_dataset.id
+  // name of this table, the table name will be name with run number, but the friendly name will be the same with what we set here
+  name = "service__materialized_view_name_2"
+  // description of the table
+  description = "materialized view descriptions"
+  // protect terraform from deleting the resource, set to false in this example because the test will need to be able to destroy it
+  deletion_protection = false
+  // customer managed key that dataset is created
+  customer_managed_key_id = module.bigquery_dataset.customer_managed_key_id
+
+  materialized_view = [{
+    query = "SELECT * FROM ${module.bigquery_dataset.id}.${module.bigquery_table_2.id}"
+  }]
+}
+
 module "bigquery_table_2_view" {
   source = "../../modules/gcp_bigquery_table"
   // dataset id that this table will be created in
@@ -234,7 +252,7 @@ module "bigquery_table_2_view" {
   // customer managed key that dataset is created
   customer_managed_key_id = module.bigquery_dataset.customer_managed_key_id
 
-  materialized_view = [{
+  view = [{
     query = "SELECT * FROM ${module.bigquery_dataset.id}.${module.bigquery_table_2.id}"
   }]
 }

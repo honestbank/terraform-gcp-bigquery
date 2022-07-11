@@ -33,6 +33,14 @@ variable "materialized_view" {
   type = set(object({
     query = string
   }))
-  description = "create view for table"
+  description = "create materialized view table (https://cloud.google.com/bigquery/docs/materialized-views-intro)"
+  default     = []
+}
+
+variable "view" {
+  type = set(object({
+    query = string
+  }))
+  description = "create view table (https://cloud.google.com/bigquery/docs/views-intro)"
   default     = []
 }

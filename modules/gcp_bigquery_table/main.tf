@@ -23,4 +23,11 @@ resource "google_bigquery_table" "google_bigquery_table" {
       query = materialized_view.value["query"]
     }
   }
+
+  dynamic "view" {
+    for_each = var.view
+    content {
+      query = view.value["query"]
+    }
+  }
 }
