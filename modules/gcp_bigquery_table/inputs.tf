@@ -35,6 +35,10 @@ variable "materialized_view" {
   }))
   description = "create materialized view table (https://cloud.google.com/bigquery/docs/materialized-views-intro)"
   default     = []
+  validation {
+    condition     = length(var.materialized_view) <= 1
+    error_message = "Support only single materialized view."
+  }
 }
 
 variable "view" {
@@ -43,4 +47,8 @@ variable "view" {
   }))
   description = "create view table (https://cloud.google.com/bigquery/docs/views-intro)"
   default     = []
+  validation {
+    condition     = length(var.view) <= 1
+    error_message = "Support only single view."
+  }
 }
