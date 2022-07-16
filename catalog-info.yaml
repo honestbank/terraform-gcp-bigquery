@@ -1,0 +1,16 @@
+apiVersion: backstage.io/v1alpha1
+kind: Resource
+metadata:
+  name: terraform-gcp-bigquery
+  description: Terraform module for providing utilities to create BigQuery datasets and tables
+  annotations:
+    github.com/project-slug: honestbank/terraform-gcp-bigquery
+    github.com/team-slug: honestbank/devops-engineers
+spec:
+  type: tf-module
+  lifecycle: prod
+  system: infrastructure
+  owner: group:devops-engineers
+  dependencyOf:
+    - resource:application-iam
+    - resource:data-warehouse
