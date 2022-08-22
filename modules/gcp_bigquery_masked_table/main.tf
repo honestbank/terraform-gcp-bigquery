@@ -1,3 +1,12 @@
+terraform {
+  required_providers {
+    time = {
+      source  = "hashicorp/time"
+      version = "0.7.2"
+    }
+  }
+}
+
 locals {
   schema             = [for item in var.schema : { name : item.name, type : item.type, mode : item.mode }]
   non_pii_columns    = [for item in var.schema : item.name if !item.pii]
@@ -14,6 +23,10 @@ module "table_main" {
   schema                  = jsonencode(local.schema)
 }
 
+resource "time_sleep" "wait_for_table" {
+  create_duration = "10s"
+}
+
 module "view_masked" {
   source              = "../gcp_bigquery_materialized_view"
   dataset_id          = var.view_dataset_id
@@ -24,6 +37,9 @@ module "view_masked" {
 SELECT
 ${join(",\n", local.non_pii_columns)},
 ${join(",\n", local.hashed_pii_columns)}
-FROM ${var.table_dataset_id}.${var.name}
+FROM ${var.table_dataset_id}.${module.table_main.name}
 EOF
+  depends_on = [
+    time_sleep.wait_for_table
+  ]
 }

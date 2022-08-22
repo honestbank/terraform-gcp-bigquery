@@ -1,7 +1,7 @@
 output "bigquery_dataset_id" {
-  value = module.create_bigquery_dataset.id
+  value = module.bigquery_dataset.id
 }
 
 output "bigquery_dataset_link" {
-  value = module.create_bigquery_dataset.self_link
+  value = module.bigquery_dataset.self_link
 }

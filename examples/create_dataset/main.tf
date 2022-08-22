@@ -22,7 +22,7 @@ resource "google_service_account" "owner" {
 }
 
 // creating the BigQuery dataset at Jakarta
-module "create_bigquery_dataset" {
+module "bigquery_dataset" {
   source = "../../modules/gcp_bigquery_dataset"
   // name of the dataset, this will have run number as suffix but the friendly name will be exactly what we set
   name = "dataset_${random_id.random_id.hex}"

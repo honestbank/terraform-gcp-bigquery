@@ -23,8 +23,8 @@ func TestGCPBigQueryMaskedTable(t *testing.T) {
 			TerraformDir: testStructure.CopyTerraformFolderToTemp(t, "..", "examples/create_masked_table"),
 		})
 
-		terraform.InitAndApply(t, options)
 		defer terraform.Destroy(t, options)
+		terraform.InitAndApply(t, options)
 
 		datasetID := terraform.Output(t, options, "bigquery_main_dataset_id")
 		assert.NotEmpty(t, datasetID)
