@@ -368,7 +368,7 @@ token.json
 *.out
 
 # Dependency directories (remove the comment below to include it)
-# vendor/
+vendor/
 
 ####################################################################################
 # Android from https://github.com/github/gitignore/blob/master/Android.gitignore
