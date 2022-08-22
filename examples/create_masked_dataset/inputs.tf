@@ -1,3 +1,9 @@
+variable "google_location" {
+  type        = string
+  description = "location"
+  default     = "asia-southeast2"
+}
+
 variable "google_project" {
   type        = string
   description = "Project that dataset will be created"
