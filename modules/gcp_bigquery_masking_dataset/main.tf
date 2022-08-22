@@ -51,8 +51,8 @@ resource "google_bigquery_dataset" "google_bigquery_main_dataset" {
 resource "google_bigquery_dataset" "google_bigquery_masked_dataset" {
   depends_on = [google_kms_crypto_key_iam_member.google_kms_crypto_key_iam_member]
 
-  dataset_id    = "${var.name}-masked"
-  friendly_name = "${var.name}-masked"
+  dataset_id    = "${var.name}_masked"
+  friendly_name = "${var.name}_masked"
   description   = "Collection of PII masked data from ${var.name} dataset"
   location      = var.location
   access {
