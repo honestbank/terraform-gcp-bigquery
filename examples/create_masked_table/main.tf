@@ -25,7 +25,7 @@ resource "google_service_account" "owner" {
 module "bigquery_dataset" {
   source = "../../modules/gcp_bigquery_masking_dataset"
   // name of the dataset, this will have run number as suffix but the friendly name will be exactly what we set
-  name = "dataset_${random_id.random_id.hex}"
+  name = "dataset_test"
   // description describe the dataset
   description = "dataset's description"
   // location of the resource which here is Jakarta
@@ -34,6 +34,11 @@ module "bigquery_dataset" {
   owner_email = google_service_account.owner.email
   // indicate the Google project that this resource will be created in
   google_project = var.google_project
+}
+
+resource "time_sleep" "sleep_before_creating_tables" {
+  create_duration  = "10s"
+  destroy_duration = "0s"
 }
 
 // creating the BigQuery table
@@ -53,5 +58,8 @@ module "bigquery_masked_table" {
   schema = [
     { name : "name", type : "STRING", pii : true, mode : "NULLABLE" },
     { name : "id", type : "STRING", pii : false, mode : "NULLABLE" }
+  ]
+  depends_on = [
+    time_sleep.sleep_before_creating_tables
   ]
 }

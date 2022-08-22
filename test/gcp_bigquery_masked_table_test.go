@@ -16,16 +16,15 @@ func TestGCPBigQueryMaskedTable(t *testing.T) {
 	projectName := os.Getenv("TF_VAR_google_project")
 	credentials := os.Getenv("TF_VAR_google_credentials")
 
-	t.Run("success", func(t *testing.T) {
+	t.Run("successfully creates a table and a view", func(t *testing.T) {
 		t.Parallel()
 
 		options := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
 			TerraformDir: testStructure.CopyTerraformFolderToTemp(t, "..", "examples/create_masked_table"),
 		})
 
-		defer terraform.Destroy(t, options)
-
 		terraform.InitAndApply(t, options)
+		defer terraform.Destroy(t, options)
 
 		datasetID := terraform.Output(t, options, "bigquery_main_dataset_id")
 		assert.NotEmpty(t, datasetID)
