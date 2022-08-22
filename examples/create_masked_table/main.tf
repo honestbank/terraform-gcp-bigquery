@@ -27,7 +27,7 @@ resource "random_id" "dataset_suffix" {
 module "bigquery_dataset" {
   source = "../../modules/gcp_bigquery_masked_dataset"
   // name of the dataset, this will have run number as suffix but the friendly name will be exactly what we set
-  name = "dataset-${random_id.dataset_suffix.hex}"
+  name = "dataset_${random_id.dataset_suffix.hex}"
   // description describe the dataset
   description = "dataset's description"
   // location of the resource which here is Jakarta
