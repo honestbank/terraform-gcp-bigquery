@@ -20,12 +20,14 @@ resource "google_service_account" "owner" {
   account_id   = "datasetowner${random_id.random_id.hex}"
   display_name = "dataset_owner"
 }
-
+resource "random_id" "dataset_suffix" {
+  byte_length = 10
+}
 // creating the BigQuery dataset at Jakarta
 module "bigquery_dataset" {
   source = "../../modules/gcp_bigquery_masked_dataset"
   // name of the dataset, this will have run number as suffix but the friendly name will be exactly what we set
-  name = "dataset_test"
+  name = "dataset-${random_id.dataset_suffix.hex}"
   // description describe the dataset
   description = "dataset's description"
   // location of the resource which here is Jakarta
