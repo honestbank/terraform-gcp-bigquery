@@ -29,5 +29,5 @@ variable "customer_managed_key_id" {
 }
 
 variable "schema" {
-  type = list(object({name: string, type: string, pii: bool, mode: string}))
+  type = list(object({ name : string, type : string, pii : bool, mode : string }))
 }
