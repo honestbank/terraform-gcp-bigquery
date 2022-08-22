@@ -1,4 +1,5 @@
 ## Requirements
+This creates 2 datasets, one for raw data tables and another one for masked views.
 
 | Name | Version |
 |------|---------|

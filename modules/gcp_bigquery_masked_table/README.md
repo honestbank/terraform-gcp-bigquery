@@ -1,4 +1,5 @@
 ## Requirements
+This creates a table and a corresponding view with PII information masked.
 
 No requirements.
 
