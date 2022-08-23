@@ -24,7 +24,8 @@ module "table_main" {
 }
 
 resource "time_sleep" "wait_for_table" {
-  create_duration = "10s"
+  create_duration = "60s"
+  depends_on      = [module.table_main]
 }
 
 module "view_masked" {
