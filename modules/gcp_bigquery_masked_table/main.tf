@@ -31,7 +31,7 @@ resource "time_sleep" "wait_for_table" {
 module "view_masked" {
   source              = "../gcp_bigquery_materialized_view"
   dataset_id          = var.view_dataset_id
-  deletion_protection = var.deletion_protection
+  deletion_protection = false
   description         = "Materialized view with PII data masked from ${var.name} table in ${var.table_dataset_id} dataset"
   name                = "${var.name}_view_masked"
   query               = <<EOF
