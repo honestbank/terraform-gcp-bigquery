@@ -36,8 +36,7 @@ module "view_masked" {
   name                = "${var.name}_view_masked"
   query               = <<EOF
 SELECT
-${join(",\n", local.non_pii_columns)},
-${join(",\n", local.hashed_pii_columns)}
+${join(",\n", concat(local.non_pii_columns, local.hashed_pii_columns))}
 FROM ${var.table_dataset_id}.${module.table_main.name}
 EOF
   depends_on = [
