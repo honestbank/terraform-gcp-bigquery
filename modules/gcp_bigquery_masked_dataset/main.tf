@@ -9,6 +9,7 @@ resource "google_kms_key_ring" "google_kms_key_ring" {
 
 resource "google_kms_crypto_key" "google_kms_crypto_key" {
   #checkov:skip=CKV_GCP_82:Need to be able to delete because of integration test
+  #checkov:skip=CKV2_GCP_6:Keys are not exported but used in modules
   name            = "${var.name}-${random_id.random_id.hex}"
   key_ring        = google_kms_key_ring.google_kms_key_ring.id
   rotation_period = "7776000s" # 90 days
