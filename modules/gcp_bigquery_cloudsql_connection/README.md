@@ -9,7 +9,7 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google-beta"></a> [google-beta](#provider\_google-beta) | 4.16.0 |
+| <a name="provider_google-beta"></a> [google-beta](#provider\_google-beta) | >=4.16.0 |
 
 ## Modules
 
@@ -37,4 +37,5 @@ No modules.
 | Name | Description |
 |------|-------------|
 | <a name="output_bigquery_connection_link"></a> [bigquery\_connection\_link](#output\_bigquery\_connection\_link) | The connection name of the instance to be used in connection strings. For example, when connecting with Cloud SQL Proxy. |
+| <a name="output_id"></a> [id](#output\_id) | The reference ID of the created resource |
 <!-- END_TF_DOCS -->

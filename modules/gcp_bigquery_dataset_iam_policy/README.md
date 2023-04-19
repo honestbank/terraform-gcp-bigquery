@@ -11,7 +11,7 @@ This module is using for attach IAM into the BigQuery dataset
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | 4.13.0 |
+| <a name="provider_google"></a> [google](#provider\_google) | >= 4.13.0 |
 
 ## Modules
 
