@@ -13,7 +13,7 @@ This module is using for create BigQuery dataset with expirable tables which wil
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | 4.13.0 |
+| <a name="provider_google"></a> [google](#provider\_google) | >= 4.13.0 |
 | <a name="provider_random"></a> [random](#provider\_random) | 3.1.2 |
 | <a name="provider_time"></a> [time](#provider\_time) | 0.7.2 |
 
@@ -37,6 +37,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_default_table_expiration_ms"></a> [default\_table\_expiration\_ms](#input\_default\_table\_expiration\_ms) | The default lifetime of all tables in the dataset, in milliseconds. The minimum value is 3600000 milliseconds (one hour). Once this property is set, all newly-created tables in the dataset will have an expirationTime property set to the creation time plus the value in this property, and changing the value will only affect new tables, not existing ones. When the expirationTime for a given table is reached, that table will be deleted automatically. If a table's expirationTime is modified or removed before the table expires, or if you provide an explicit expirationTime when creating a table, that value takes precedence over the default expiration time indicated by this property | `number` | n/a | yes |
 | <a name="input_description"></a> [description](#input\_description) | A user-friendly description of the dataset | `string` | n/a | yes |
 | <a name="input_google_project"></a> [google\_project](#input\_google\_project) | GCP project name that this dataset will be creating in. | `string` | n/a | yes |
 | <a name="input_location"></a> [location](#input\_location) | The geographic location where the dataset should reside. See official docs. <br>There are two types of locations, regional or multi-regional. A regional location is a specific geographic place, such as Tokyo, and a multi-regional location is a large geographic area, such as the United States, that contains at least two geographic places. <br>The default value is multi-regional location US. Changing this forces a new resource to be created. | `string` | n/a | yes |

@@ -13,7 +13,7 @@ This module is using for create BigQuery dataset on Google Cloud.
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | 4.13.0 |
+| <a name="provider_google"></a> [google](#provider\_google) | >= 4.13.0 |
 | <a name="provider_random"></a> [random](#provider\_random) | 3.1.2 |
 | <a name="provider_time"></a> [time](#provider\_time) | 0.7.2 |
 
@@ -47,7 +47,7 @@ No modules.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_customer_managed_key_id"></a> [customer\_managed\_key\_id](#output\_customer\_managed\_key\_id) | n/a |
-| <a name="output_id"></a> [id](#output\_id) | n/a |
-| <a name="output_self_link"></a> [self\_link](#output\_self\_link) | n/a |
+| <a name="output_customer_managed_key_id"></a> [customer\_managed\_key\_id](#output\_customer\_managed\_key\_id) | The reference ID of the created customer managed key |
+| <a name="output_id"></a> [id](#output\_id) | The reference ID of the created resource |
+| <a name="output_self_link"></a> [self\_link](#output\_self\_link) | The full link into the created resource |
 <!-- END_TF_DOCS -->
