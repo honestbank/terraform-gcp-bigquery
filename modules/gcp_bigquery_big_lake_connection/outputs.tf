@@ -1,5 +1,5 @@
 output "service_account_id" {
-  description = "The connection name of the instance to be used in connection strings. For example, when connecting with Cloud SQL Proxy."
+  description = "Build-in service account that is populated after connection has been created"
   value       = google_bigquery_connection.big_lake_connection.cloud_resource[0].service_account_id
 }
 
