@@ -44,7 +44,7 @@ module "big_lake_table" {
   // Let the table detect schema automatically
   autodetect = true
   // Connection id to Big Lake table
-  connection_id = "projects/storage-44a30d2d/locations/asia-southeast2/connections/big_lake_connection"
+  connection_id = "big_lake_connection"
   // dataset id that this table will be created in
   dataset_id = "big_lake_poc"
   // protect terraform from deleting the resource, set to false in this example because the test will need to be able to destroy it
@@ -54,11 +54,11 @@ module "big_lake_table" {
   // Hive partition mode for detect file pattern
   hive_partitioning_mode = "AUTO"
   // dataset id
-  hive_source_uri_prefix = "gs://kafka-connector-dev_06d1a6cf/topics/data.online-etl.brankas.transformed_transactions"
+  hive_source_uri_prefix = "hive_source_uri"
   // name of this table, the table name will be name with run number, but the friendly name will be the same with what we set here
   name = "big_lake_table"
   // Format of source NEWLINE_DELIMITED_JSON, AVRO, PARQUET
   source_format = "NEWLINE_DELIMITED_JSON"
   // source uri that let Big Lake table read the external data from GCS
-  source_uris = ["gs://kafka-connector-dev_06d1a6cf/topics/data.online-etl.brankas.transformed_transactions*"]
+  source_uris = ["source_uri_pattern"]
 }
