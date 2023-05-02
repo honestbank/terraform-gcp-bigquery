@@ -33,6 +33,7 @@ No modules.
 
 | Name | Description |
 |------|-------------|
+| <a name="output_connection_id"></a> [connection\_id](#output\_connection\_id) | The reference ID of the created resource |
 | <a name="output_id"></a> [id](#output\_id) | The reference ID of the created resource |
 | <a name="output_service_account_id"></a> [service\_account\_id](#output\_service\_account\_id) | Build-in service account that is populated after connection has been created |
 <!-- END_TF_DOCS -->
