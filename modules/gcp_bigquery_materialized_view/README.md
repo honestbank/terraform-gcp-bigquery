@@ -11,7 +11,7 @@ This module is using for create BigQuery Materialized View (https://cloud.google
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | >= 4.13.0 |
+| <a name="provider_google"></a> [google](#provider\_google) | 4.62.1 |
 
 ## Modules
 

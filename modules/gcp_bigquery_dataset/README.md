@@ -13,7 +13,7 @@ This module is using for create BigQuery dataset on Google Cloud.
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | >= 4.13.0 |
+| <a name="provider_google"></a> [google](#provider\_google) | 4.62.1 |
 | <a name="provider_random"></a> [random](#provider\_random) | 3.1.2 |
 | <a name="provider_time"></a> [time](#provider\_time) | 0.7.2 |
 

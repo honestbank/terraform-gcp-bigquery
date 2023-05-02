@@ -3,7 +3,7 @@
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_google-beta"></a> [google-beta](#requirement\_google-beta) | >=4.62.0 |
+| <a name="requirement_google"></a> [google](#requirement\_google) | >= 4.62.0 |
 
 ## Providers
 
@@ -33,6 +33,7 @@ No modules.
 
 | Name | Description |
 |------|-------------|
+| <a name="output_connection_id"></a> [connection\_id](#output\_connection\_id) | The reference ID of the created resource |
 | <a name="output_id"></a> [id](#output\_id) | The reference ID of the created resource |
-| <a name="output_service_account_id"></a> [service\_account\_id](#output\_service\_account\_id) | The connection name of the instance to be used in connection strings. For example, when connecting with Cloud SQL Proxy. |
+| <a name="output_service_account_id"></a> [service\_account\_id](#output\_service\_account\_id) | Build-in service account that is populated after connection has been created |
 <!-- END_TF_DOCS -->
