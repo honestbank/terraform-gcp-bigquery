@@ -20,7 +20,7 @@ func TestGCPBigQueryMaskedTable(t *testing.T) {
 		t.Parallel()
 
 		options := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
-			TerraformDir: testStructure.CopyTerraformFolderToTemp(t, "..", "examples/create_masked_table"),
+			TerraformDir: testStructure.CopyTerraformFolderToTemp(t, "..", "examples/gcp_bigquery_masked_table"),
 		})
 
 		defer terraform.Destroy(t, options)

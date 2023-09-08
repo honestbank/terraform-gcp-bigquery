@@ -19,7 +19,7 @@ func TestGCPBigQueryMaskingDataset(t *testing.T) {
 	t.Run("creates 2 dataset, one for main data and another for masking datasets suffix", func(t *testing.T) {
 		t.Parallel()
 
-		options := getOptions(t, testStructure.CopyTerraformFolderToTemp(t, "..", "examples/create_masked_dataset"))
+		options := getOptions(t, testStructure.CopyTerraformFolderToTemp(t, "..", "examples/gcp_bigquery_masked_dataset"))
 
 		defer terraform.Destroy(t, options)
 
