@@ -1,13 +1,9 @@
-# Terraform GCP BigQuery component module
+# Terraform GCP BigQuery Component Module
 
-This Terraform component module provide utility to create
+[![terratest](https://github.com/honestbank/terraform-gcp-bigquery/actions/workflows/terratest.yaml/badge.svg)](https://github.com/honestbank/terraform-gcp-bigquery/actions/workflows/terratest.yaml)
 
-* BigQuery dataset and attach dataset IAM
-* BigQuery table with predefined JSON schema
-
-The user of this component need to provide google credentials with permissions
-* Owner for creating - because we need to be able to create customer managed key and BigQuery dataset
-* BigQuery Admin - to create BigQuery table inside the dataset, GCP need this permission
+This repository contains Terraform [component modules](https://www.notion.so/honestbank/Terraform-Module-Structure-31374a1594f84ef7b185ef4e06b36619?pvs=4)
+to create BigQuery and BigLake resources on Google Cloud.
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
