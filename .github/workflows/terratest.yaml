@@ -9,6 +9,8 @@ on:
   push:
     branches:
       - main
+  workflow_dispatch:
+
 env:
   TERRATEST_GOOGLE_CREDENTIALS: ${{ secrets.TERRATEST_GOOGLE_CREDENTIALS }}
   GOOGLE_PROJECT: ${{ secrets.TERRATEST_GOOGLE_PROJECT }}
