@@ -27,6 +27,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_dataset_encryption_key_name"></a> [dataset\_encryption\_key\_name](#input\_dataset\_encryption\_key\_name) | The KMS key used to encrypt the dataset specified in var.dataset\_id | `string` | n/a | yes |
 | <a name="input_dataset_id"></a> [dataset\_id](#input\_dataset\_id) | A unique ID for this dataset, without the project name. The ID must contain only letters (a-z, A-Z), numbers (0-9), or underscores (\_). The maximum length is 1,024 characters. | `string` | n/a | yes |
 | <a name="input_deletion_protection"></a> [deletion\_protection](#input\_deletion\_protection) | Whether or not to prevent Terraform from destroying the instance. | `bool` | n/a | yes |
 | <a name="input_description"></a> [description](#input\_description) | The field description. | `string` | n/a | yes |

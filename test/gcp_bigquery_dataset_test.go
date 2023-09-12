@@ -41,5 +41,8 @@ func TestGCPBigQueryDataset(t *testing.T) {
 		assert.NoError(t, err)
 
 		assert.Equal(t, projectName, client.Dataset(id).ProjectID)
+
+		// Ensure no drift on next run
+		ensureZeroResourceChange(t, options)
 	})
 }

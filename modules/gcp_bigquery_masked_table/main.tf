@@ -29,12 +29,13 @@ resource "time_sleep" "wait_for_table" {
 }
 
 module "view_masked" {
-  source              = "../gcp_bigquery_materialized_view"
-  dataset_id          = var.view_dataset_id
-  deletion_protection = var.deletion_protection
-  description         = "Materialized view with PII data masked from ${var.name} table in ${var.table_dataset_id} dataset"
-  name                = "${var.name}_view_masked"
-  query               = <<EOF
+  source                      = "../gcp_bigquery_materialized_view"
+  dataset_id                  = var.view_dataset_id
+  deletion_protection         = var.deletion_protection
+  description                 = "Materialized view with PII data masked from ${var.name} table in ${var.table_dataset_id} dataset"
+  name                        = "${var.name}_view_masked"
+  dataset_encryption_key_name = var.customer_managed_key_id
+  query                       = <<EOF
 SELECT
 ${join(",\n", concat(local.non_pii_columns, local.hashed_pii_columns))}
 FROM ${var.table_dataset_id}.${module.table_main.name}
