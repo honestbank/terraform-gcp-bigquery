@@ -36,5 +36,8 @@ func TestGCPBigQueryMaskingDataset(t *testing.T) {
 
 		assert.Equal(t, projectName, client.Dataset(mainDatasetID).ProjectID)
 		assert.Equal(t, projectName, client.Dataset(maskedDatasetID).ProjectID)
+
+		// Ensure no drift on next run
+		ensureZeroResourceChange(t, options)
 	})
 }

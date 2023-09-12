@@ -25,5 +25,8 @@ func TestGCPBigQueryConnection(t *testing.T) {
 		// test connection based on terraform output
 		link := terraform.Output(t, options, "bigquery_connection_link")
 		assert.NotEmpty(t, link)
+
+		// Ensure no drift on next run
+		ensureZeroResourceChange(t, options)
 	})
 }
