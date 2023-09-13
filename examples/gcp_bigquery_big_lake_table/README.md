@@ -19,6 +19,7 @@
 
 | Name | Source | Version |
 |------|--------|---------|
+| <a name="module_big_lake_connection"></a> [big\_lake\_connection](#module\_big\_lake\_connection) | ../../modules/gcp_bigquery_big_lake_connection | n/a |
 | <a name="module_big_lake_table"></a> [big\_lake\_table](#module\_big\_lake\_table) | ../../modules/gcp_bigquery_big_lake_table | n/a |
 | <a name="module_bigquery_dataset"></a> [bigquery\_dataset](#module\_bigquery\_dataset) | ../../modules/gcp_bigquery_dataset | n/a |
 
@@ -27,6 +28,10 @@
 | Name | Type |
 |------|------|
 | [google_service_account.owner](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/service_account) | resource |
+| [google_storage_bucket.big_lake_data_source](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/storage_bucket) | resource |
+| [google_storage_bucket_iam_member.big_lake_connection_gcs_binding](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/storage_bucket_iam_member) | resource |
+| [google_storage_bucket_object.dummy_parquet_file](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/storage_bucket_object) | resource |
+| [random_id.big_lake_data_source_random_id](https://registry.terraform.io/providers/hashicorp/random/3.1.2/docs/resources/id) | resource |
 | [random_id.random_id](https://registry.terraform.io/providers/hashicorp/random/3.1.2/docs/resources/id) | resource |
 
 ## Inputs

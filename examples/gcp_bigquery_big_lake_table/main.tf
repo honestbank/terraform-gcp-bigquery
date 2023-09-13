@@ -15,6 +15,11 @@ resource "random_id" "random_id" {
   byte_length = 4
 }
 
+locals {
+  CONST_GOOGLE_REGION_JAKARTA          = "asia-southeast2"
+  CONST_BIGQUERY_SOURCE_FORMAT_PARQUET = "PARQUET"
+}
+
 // create a google service account to become dataset owner
 resource "google_service_account" "owner" {
   account_id   = "datasetowner${random_id.random_id.hex}"
@@ -37,6 +42,12 @@ module "bigquery_dataset" {
   google_project = var.google_project
 }
 
+module "big_lake_connection" {
+  source        = "../../modules/gcp_bigquery_big_lake_connection"
+  connection_id = "big_lake_connection"
+  location      = local.CONST_GOOGLE_REGION_JAKARTA
+}
+
 // creating the BigQuery Big Lake table
 module "big_lake_table" {
   source = "../../modules/gcp_bigquery_big_lake_table"
@@ -44,21 +55,48 @@ module "big_lake_table" {
   // Let the table detect schema automatically
   autodetect = true
   // Connection id to Big Lake table
-  connection_id = "big_lake_connection"
+  connection_id = module.big_lake_connection.id
   // dataset id that this table will be created in
-  dataset_id = "big_lake_poc"
+  dataset_id = module.bigquery_dataset.id
   // protect terraform from deleting the resource, set to false in this example because the test will need to be able to destroy it
   deletion_protection = false
   // description of the table
   description = "table descriptions"
-  // Hive partition mode for detect file pattern
+
   hive_partitioning_mode = "AUTO"
-  // dataset id
-  hive_source_uri_prefix = "hive_source_uri"
+  hive_source_uri_prefix = "gs://${google_storage_bucket.big_lake_data_source.name}/"
   // name of this table, the table name will be name with run number, but the friendly name will be the same with what we set here
   name = "big_lake_table"
   // Format of source NEWLINE_DELIMITED_JSON, AVRO, PARQUET
-  source_format = "NEWLINE_DELIMITED_JSON"
+  source_format = local.CONST_BIGQUERY_SOURCE_FORMAT_PARQUET
   // source uri that let Big Lake table read the external data from GCS
-  source_uris = ["source_uri_pattern"]
+  source_uris = ["gs://${google_storage_bucket.big_lake_data_source.name}/${google_storage_bucket_object.dummy_parquet_file.name}"]
+
+  dataset_kms_key_name = module.bigquery_dataset.customer_managed_key_id
+
+  depends_on = [google_storage_bucket.big_lake_data_source, google_storage_bucket_iam_member.big_lake_connection_gcs_binding]
+}
+
+resource "google_storage_bucket" "big_lake_data_source" {
+  location = local.CONST_GOOGLE_REGION_JAKARTA
+  name     = "big_lake_data_source-${random_id.big_lake_data_source_random_id.hex}"
+}
+
+resource "random_id" "big_lake_data_source_random_id" {
+  byte_length = 4
+}
+
+resource "google_storage_bucket_iam_member" "big_lake_connection_gcs_binding" {
+  bucket = google_storage_bucket.big_lake_data_source.id
+  member = "serviceAccount:${module.big_lake_connection.service_account_id}"
+  role   = "roles/storage.objectViewer"
+
+  depends_on = [module.big_lake_connection]
+}
+
+resource "google_storage_bucket_object" "dummy_parquet_file" {
+  bucket       = google_storage_bucket.big_lake_data_source.id
+  name         = "lang=en/test.parquet"
+  source       = "./test.parquet"
+  content_type = "text/plain"
 }

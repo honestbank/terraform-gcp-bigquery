@@ -23,6 +23,10 @@ resource "google_bigquery_table" "google_bigquery_table" {
   # Terraform will detect changes to this property made by BigQuery, but we'll ignore them using the `lifecycle` block.
   schema = var.schema
 
+  encryption_configuration {
+    kms_key_name = var.dataset_kms_key_name
+  }
+
   dynamic "external_data_configuration" {
     for_each = (contains(local.schema_disabled_source_formats, var.source_format) == true ? toset(["external_data_configuration"]) : toset([]))
     content {

@@ -28,6 +28,7 @@ No modules.
 | <a name="input_autodetect"></a> [autodetect](#input\_autodetect) | Let BigQuery try to autodetect the schema and format of the table. | `bool` | n/a | yes |
 | <a name="input_connection_id"></a> [connection\_id](#input\_connection\_id) | The connection specifying the credentials to be used to read external storage for Big Lake table | `string` | n/a | yes |
 | <a name="input_dataset_id"></a> [dataset\_id](#input\_dataset\_id) | A unique ID for this dataset, without the project name. The ID must contain only letters (a-z, A-Z), numbers (0-9), or underscores (\_). The maximum length is 1,024 characters. | `string` | n/a | yes |
+| <a name="input_dataset_kms_key_name"></a> [dataset\_kms\_key\_name](#input\_dataset\_kms\_key\_name) | The name of the GCP KMS key used by the dataset specified in `var.dataset_id` | `string` | n/a | yes |
 | <a name="input_deletion_protection"></a> [deletion\_protection](#input\_deletion\_protection) | Whether or not to prevent Terraform from destroying the instance. | `bool` | n/a | yes |
 | <a name="input_description"></a> [description](#input\_description) | The field description. | `string` | n/a | yes |
 | <a name="input_hive_partitioning_mode"></a> [hive\_partitioning\_mode](#input\_hive\_partitioning\_mode) | what mode of hive partitioning to use when reading data. The following modes are supported AUTO, STRINGS, and CUSTOM | `string` | n/a | yes |
