@@ -7,6 +7,12 @@ terraform {
   }
 }
 
+locals {
+  # All possible source formats: https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externaldataconfiguration
+  # Schema disabled source_formats: https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/bigquery_table#schema
+  schema_disabled_source_formats = ["GOOGLE_SHEETS", "PARQUET", "AVRO", "ORC", "DATASTORE_BACKUP", "BIGTABLE"]
+}
+
 resource "google_bigquery_table" "google_bigquery_table" {
   # checkov:skip=CKV_GCP_80:Big Lake Table does not support CSEK. The normal practice is to use the key in GCS bucket.
   dataset_id          = var.dataset_id
@@ -17,18 +23,37 @@ resource "google_bigquery_table" "google_bigquery_table" {
   # Terraform will detect changes to this property made by BigQuery, but we'll ignore them using the `lifecycle` block.
   schema = var.schema
 
-  external_data_configuration {
-    autodetect    = var.autodetect
-    connection_id = var.connection_id
-    source_format = var.source_format
-    source_uris   = var.source_uris
+  dynamic "external_data_configuration" {
+    for_each = (contains(local.schema_disabled_source_formats, var.source_format) == true ? toset(["external_data_configuration"]) : toset([]))
+    content {
+      autodetect    = var.autodetect
+      connection_id = var.connection_id
+      source_format = var.source_format
+      source_uris   = var.source_uris
 
-    # Use the exact same schema here. This one won't be changed by BigQuery, however Terraform will still detect the changes you make on purpose to this field.
-    schema = var.schema
+      hive_partitioning_options {
+        mode              = var.hive_partitioning_mode
+        source_uri_prefix = var.hive_source_uri_prefix
+      }
+    }
+  }
 
-    hive_partitioning_options {
-      mode              = var.hive_partitioning_mode
-      source_uri_prefix = var.hive_source_uri_prefix
+  dynamic "external_data_configuration" {
+    for_each = (contains(local.schema_disabled_source_formats, var.source_format) == false ? toset(["external_data_configuration"]) : toset([]))
+    content {
+      autodetect    = var.autodetect
+      connection_id = var.connection_id
+      source_format = var.source_format
+      source_uris   = var.source_uris
+
+      # Use the exact same schema here. This one won't be changed by BigQuery, however Terraform will still detect
+      # intentional changes to this field.
+      schema = var.schema
+
+      hive_partitioning_options {
+        mode              = var.hive_partitioning_mode
+        source_uri_prefix = var.hive_source_uri_prefix
+      }
     }
   }
 
