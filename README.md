@@ -1,4 +1,4 @@
-# Terraform GCP BigQuery Component Module
+# Terraform Component Modules for Google BigQuery
 
 [![terratest](https://github.com/honestbank/terraform-gcp-bigquery/actions/workflows/terratest.yaml/badge.svg)](https://github.com/honestbank/terraform-gcp-bigquery/actions/workflows/terratest.yaml)
 

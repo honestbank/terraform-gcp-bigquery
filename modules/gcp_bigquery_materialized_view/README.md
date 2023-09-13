@@ -11,14 +11,11 @@ This module is using for create BigQuery Materialized View (https://cloud.google
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | 4.81.0 |
+| <a name="provider_google"></a> [google](#provider\_google) | >= 4.13.0 |
 
 ## Modules
 
-| Name | Source | Version |
-|------|--------|---------|
-| <a name="module_dataset"></a> [dataset](#module\_dataset) | ../gcp_bigquery_dataset | n/a |
-| <a name="module_table"></a> [table](#module\_table) | ../gcp_bigquery_table | n/a |
+No modules.
 
 ## Resources
 
