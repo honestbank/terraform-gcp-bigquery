@@ -32,18 +32,10 @@ resource "google_kms_crypto_key" "google_kms_crypto_key" {
   rotation_period = "7776000s"
 }
 
-resource "time_sleep" "time_sleep" {
-  depends_on = [google_kms_crypto_key.google_kms_crypto_key]
-
-  create_duration = "30s"
-}
-
 data "google_bigquery_default_service_account" "google_bigquery_default_service_account" {
 }
 
 resource "google_kms_crypto_key_iam_member" "google_kms_crypto_key_iam_member" {
-  depends_on = [time_sleep.time_sleep]
-
   crypto_key_id = google_kms_crypto_key.google_kms_crypto_key.id
   role          = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
   member        = "serviceAccount:${data.google_bigquery_default_service_account.google_bigquery_default_service_account.email}"

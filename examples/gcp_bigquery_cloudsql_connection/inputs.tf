@@ -19,8 +19,8 @@ variable "database_name" {
 }
 
 variable "user_name" {
-  default     = "haackersss"
-  description = "username for cloudsql"
+  default     = "cloudsql_connection_example_user"
+  description = "CloudSQL database username"
 }
 
 variable "database_instance_id" {

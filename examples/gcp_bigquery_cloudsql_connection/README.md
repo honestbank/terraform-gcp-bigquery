@@ -20,9 +20,10 @@
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_attach_viewer_to_dataset"></a> [attach\_viewer\_to\_dataset](#module\_attach\_viewer\_to\_dataset) | ../../modules/gcp_bigquery_dataset_iam_policy | n/a |
 | <a name="module_bigquery_dataset"></a> [bigquery\_dataset](#module\_bigquery\_dataset) | ../../modules/gcp_bigquery_dataset | n/a |
 | <a name="module_connection"></a> [connection](#module\_connection) | ../../modules/gcp_bigquery_cloudsql_connection | n/a |
+| <a name="module_dataset_owner_access"></a> [dataset\_owner\_access](#module\_dataset\_owner\_access) | ../../modules/gcp_bigquery_dataset_iam_policy | n/a |
+| <a name="module_dataset_viewer_access"></a> [dataset\_viewer\_access](#module\_dataset\_viewer\_access) | ../../modules/gcp_bigquery_dataset_iam_policy | n/a |
 | <a name="module_sql_database"></a> [sql\_database](#module\_sql\_database) | ../../modules/terraform-gcp-sql/modules/google_sql_database | n/a |
 | <a name="module_sql_database_instance"></a> [sql\_database\_instance](#module\_sql\_database\_instance) | ../../modules/terraform-gcp-sql/modules/google_sql_database_instance | n/a |
 | <a name="module_sql_user"></a> [sql\_user](#module\_sql\_user) | ../../modules/terraform-gcp-sql/modules/google_sql_user | n/a |
@@ -31,7 +32,6 @@
 
 | Name | Type |
 |------|------|
-| [google_service_account.editor](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/service_account) | resource |
 | [google_service_account.owner](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/service_account) | resource |
 | [google_service_account.viewer](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/service_account) | resource |
 | [random_id.instance_suffix](https://registry.terraform.io/providers/hashicorp/random/3.1.2/docs/resources/id) | resource |
@@ -51,7 +51,7 @@
 | <a name="input_settings_backup_configuration_binary_log_enabled"></a> [settings\_backup\_configuration\_binary\_log\_enabled](#input\_settings\_backup\_configuration\_binary\_log\_enabled) | backup log enablement cloudsql | `bool` | `true` | no |
 | <a name="input_settings_backup_configuration_enabled"></a> [settings\_backup\_configuration\_enabled](#input\_settings\_backup\_configuration\_enabled) | Database backup enable | `bool` | `true` | no |
 | <a name="input_settings_tier"></a> [settings\_tier](#input\_settings\_tier) | instance type fo the cloudsql | `string` | `"db-f1-micro"` | no |
-| <a name="input_user_name"></a> [user\_name](#input\_user\_name) | username for cloudsql | `string` | `"haackersss"` | no |
+| <a name="input_user_name"></a> [user\_name](#input\_user\_name) | CloudSQL database username | `string` | `"cloudsql_connection_example_user"` | no |
 | <a name="input_user_type"></a> [user\_type](#input\_user\_type) | choose between CLOUD\_IAM\_SERVICE\_ACCOUNT or CLOUD\_IAM\_USER or BUILD\_IN | `string` | `"BUILT_IN"` | no |
 
 ## Outputs

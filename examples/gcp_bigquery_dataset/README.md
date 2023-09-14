@@ -20,7 +20,7 @@
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_bigquery_dataset"></a> [bigquery\_dataset](#module\_bigquery\_dataset) | ../../modules/gcp_bigquery_dataset | n/a |
-| <a name="module_create_bigquery_volatile_dataset"></a> [create\_bigquery\_volatile\_dataset](#module\_create\_bigquery\_volatile\_dataset) | ../../modules/gcp_bigquery_volatile_dataset | n/a |
+| <a name="module_bigquery_volatile_dataset"></a> [bigquery\_volatile\_dataset](#module\_bigquery\_volatile\_dataset) | ../../modules/gcp_bigquery_volatile_dataset | n/a |
 
 ## Resources
 

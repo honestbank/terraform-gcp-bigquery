@@ -44,10 +44,6 @@ resource "google_bigquery_dataset" "google_bigquery_dataset" {
   friendly_name = var.name
   description   = var.description
   location      = var.location
-  access {
-    user_by_email = var.owner_email
-    role          = "OWNER"
-  }
 
   default_encryption_configuration {
     kms_key_name = google_kms_crypto_key.google_kms_crypto_key.id
