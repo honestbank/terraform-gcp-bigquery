@@ -78,6 +78,11 @@ module "big_lake_table" {
 }
 
 resource "google_storage_bucket" "big_lake_data_source" {
+  #checkov:skip=CKV_GCP_114:This is an ephemeral example not meant for real-world usage.
+  #checkov:skip=CKV_GCP_29:This is an ephemeral example not meant for real-world usage.
+  #checkov:skip=CKV_GCP_62:This is an ephemeral example not meant for real-world usage.
+  #checkov:skip=CKV_GCP_78:This is an ephemeral example not meant for real-world usage.
+
   location = local.CONST_GOOGLE_REGION_JAKARTA
   name     = "big_lake_data_source-${random_id.big_lake_data_source_random_id.hex}"
 }
