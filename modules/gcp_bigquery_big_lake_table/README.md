@@ -26,6 +26,7 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_autodetect"></a> [autodetect](#input\_autodetect) | Let BigQuery try to autodetect the schema and format of the table. | `bool` | `true` | no |
+| <a name="input_avro_options_use_avro_logical_types"></a> [avro\_options\_use\_avro\_logical\_types](#input\_avro\_options\_use\_avro\_logical\_types) | If is set to true, indicates whether to interpret logical types as the corresponding BigQuery data type (for example, TIMESTAMP), instead of using the raw type (for example, INTEGER). | `bool` | `true` | no |
 | <a name="input_connection_id"></a> [connection\_id](#input\_connection\_id) | The connection specifying the credentials to be used to read external storage for Big Lake table | `string` | n/a | yes |
 | <a name="input_csv_options"></a> [csv\_options](#input\_csv\_options) | Options for CSV data. | <pre>object(<br>    {<br>      field_delimiter = optional(string)<br>      # Default quote is required, see https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/bigquery_table#quote<br>      quote             = optional(string, "\"")<br>      skip_leading_rows = optional(number)<br>    }<br>  )</pre> | `null` | no |
 | <a name="input_dataset_id"></a> [dataset\_id](#input\_dataset\_id) | A unique ID for this dataset, without the project name. The ID must contain only letters (a-z, A-Z), numbers (0-9), or underscores (\_). The maximum length is 1,024 characters. | `string` | n/a | yes |

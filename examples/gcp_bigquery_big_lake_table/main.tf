@@ -136,10 +136,19 @@ resource "google_storage_bucket_iam_member" "big_lake_connection_gcs_binding" {
   role   = "roles/storage.objectUser"
 }
 
+locals {
+  file_extensions = {
+    AVRO                   = "avro",
+    CSV                    = "csv",
+    NEWLINE_DELIMITED_JSON = "json",
+    PARQUET                = "parquet",
+  }
+}
+
 resource "google_storage_bucket_object" "dummy_parquet_file" {
   bucket       = google_storage_bucket.big_lake_data_source.id
-  name         = "parquet/lang=en/test.parquet"
-  source       = "./test.parquet"
+  name         = "lang=en/test.${local.file_extensions[var.external_data_source_format]}"
+  source       = "./test.${local.file_extensions[var.external_data_source_format]}"
   content_type = "text/plain"
 }
 

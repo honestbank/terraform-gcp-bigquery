@@ -32,6 +32,27 @@ variable "csv_options" {
   description = "Options for CSV data."
 }
 
+variable "json_options" {
+  type = object(
+    {
+      encoding = optional(string, "UTF-8")
+    }
+  )
+  default     = null
+  description = "Options for JSON data."
+}
+
+variable "parquet_options" {
+  type = object(
+    {
+      enum_as_string = optional(bool, false)
+      enable_list_inference = optional(bool, false)
+    }
+  )
+  default     = null
+  description = "Options for Parquet data."
+}
+
 variable "dataset_id" {
   type        = string
   description = "A unique ID for this dataset, without the project name. The ID must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_). The maximum length is 1,024 characters."
@@ -85,10 +106,10 @@ variable "schema" {
 
 variable "source_format" {
   type        = string
-  description = "Source format of table must be NEWLINE_DELIMITED_JSON, AVRO, PARQUET or CSV"
+  description = "Source data format - AVRO, CSV, JSON, PARQUET currently supported."
   validation {
-    condition     = contains(["NEWLINE_DELIMITED_JSON", "AVRO", "PARQUET", "CSV"], var.source_format)
-    error_message = "Source format of table must be NEWLINE_DELIMITED_JSON, AVRO, PARQUET or CSV"
+    condition     = contains(["AVRO", "CSV", "JSON", "PARQUET"], var.source_format)
+    error_message = "Source format of table must be one of AVRO, CSV, JSON, PARQUET."
   }
   default = "PARQUET"
 }
