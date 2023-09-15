@@ -18,7 +18,12 @@ output "masked_dataset_self_link" {
   value       = google_bigquery_dataset.google_bigquery_masked_dataset.self_link
 }
 
+output "masked_dataset_customer_managed_key_id" {
+  description = "The reference ID of the created customer managed key"
+  value       = google_kms_crypto_key.main_dataset_kms_crypto_key.id
+}
+
 output "dataset_customer_managed_key_id" {
   description = "The reference ID of the created customer managed key"
-  value       = google_kms_crypto_key.google_kms_crypto_key.id
+  value       = google_kms_crypto_key.main_dataset_kms_crypto_key.id
 }

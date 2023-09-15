@@ -6,7 +6,7 @@ locals {
 
 module "table_main" {
   source                  = "../gcp_bigquery_table"
-  customer_managed_key_id = var.customer_managed_key_id
+  customer_managed_key_id = var.table_dataset_customer_managed_key_id
   dataset_id              = var.table_dataset_id
   deletion_protection     = var.deletion_protection
   description             = var.description
@@ -25,7 +25,7 @@ module "view_masked" {
   deletion_protection         = var.deletion_protection
   description                 = "Materialized view with PII data masked from ${var.name} table in ${var.table_dataset_id} dataset"
   name                        = "${var.name}_view_masked"
-  dataset_encryption_key_name = var.customer_managed_key_id
+  dataset_encryption_key_name = var.view_dataset_customer_managed_key_id
   query                       = <<EOF
 SELECT
 ${join(",\n", concat(local.non_pii_columns, local.hashed_pii_columns))}

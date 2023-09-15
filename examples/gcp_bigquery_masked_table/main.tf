@@ -38,30 +38,21 @@ module "bigquery_dataset" {
   google_project = var.google_project
 }
 
-resource "time_sleep" "sleep_before_creating_tables" {
-  create_duration  = "10s"
-  destroy_duration = "0s"
-}
-
 // creating the BigQuery table
 module "bigquery_masked_table" {
   source = "../../modules/gcp_bigquery_masked_table"
-  // dataset id that this table will be created in
-  table_dataset_id = module.bigquery_dataset.main_dataset_id
-  view_dataset_id  = module.bigquery_dataset.masked_dataset_id
-  // name of this table, the table name will be name with run number, but the friendly name will be the same with what we set here
-  name = "service__table_name_1"
-  // description of the table
-  description = "table descriptions"
-  // protect terraform from deleting the resource, set to false in this example because the test will need to be able to destroy it
+
+  table_dataset_id                      = module.bigquery_dataset.main_dataset_id
+  table_dataset_customer_managed_key_id = module.bigquery_dataset.dataset_customer_managed_key_id
+
+  view_dataset_id                      = module.bigquery_dataset.masked_dataset_id
+  view_dataset_customer_managed_key_id = module.bigquery_dataset.masked_dataset_customer_managed_key_id
+
+  name                = "service__table_name_1"
+  description         = "table descriptions"
   deletion_protection = false
-  // customer managed key that dataset is created
-  customer_managed_key_id = module.bigquery_dataset.dataset_customer_managed_key_id
   schema = [
     { name : "name", type : "STRING", pii : true, mode : "NULLABLE" },
     { name : "id", type : "STRING", pii : false, mode : "NULLABLE" }
-  ]
-  depends_on = [
-    time_sleep.sleep_before_creating_tables
   ]
 }
