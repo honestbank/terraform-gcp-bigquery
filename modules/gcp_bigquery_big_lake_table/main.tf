@@ -18,13 +18,19 @@ resource "google_bigquery_table" "google_bigquery_table" {
     kms_key_name = var.dataset_kms_key_name
   }
 
+  # AVRO - Schema disabled
   dynamic "external_data_configuration" {
-    for_each = (contains(local.schema_disabled_source_formats, var.source_format) == true ? toset(["external_data_configuration"]) : toset([]))
+    for_each = (var.source_format == "AVRO" ? toset(["external_data_configuration_avro"]) : toset([]))
+
     content {
       autodetect    = var.autodetect
       connection_id = var.connection_id
       source_format = var.source_format
       source_uris   = var.source_uris
+
+      avro_options {
+        use_avro_logical_types = var.avro_options_use_avro_logical_types
+      }
 
       hive_partitioning_options {
         mode              = var.hive_partitioning_mode
@@ -33,8 +39,9 @@ resource "google_bigquery_table" "google_bigquery_table" {
     }
   }
 
+  # CSV - Schema allowed
   dynamic "external_data_configuration" {
-    for_each = (contains(local.schema_disabled_source_formats, var.source_format) == false ? toset(["external_data_configuration"]) : toset([]))
+    for_each = (var.source_format == "CSV" ? toset(["external_data_configuration_csv"]) : toset([]))
     content {
       autodetect    = var.autodetect
       connection_id = var.connection_id
@@ -44,6 +51,61 @@ resource "google_bigquery_table" "google_bigquery_table" {
       # Use the exact same schema here. This one won't be changed by BigQuery, however Terraform will still detect
       # intentional changes to this field.
       schema = var.schema
+
+      csv_options {
+        quote                 = var.csv_options_quote
+        allow_jagged_rows     = var.csv_options_allow_jagged_rows
+        allow_quoted_newlines = var.csv_options_allow_quoted_newlines
+        encoding              = var.csv_options_encoding
+        field_delimiter       = var.csv_options_field_delimiter
+        skip_leading_rows     = var.csv_options_skip_leading_rows
+      }
+
+      hive_partitioning_options {
+        mode              = var.hive_partitioning_mode
+        source_uri_prefix = var.hive_source_uri_prefix
+      }
+    }
+  }
+
+  # JSON - Schema allowed
+  dynamic "external_data_configuration" {
+    for_each = (var.source_format == "NEWLINE_DELIMITED_JSON" ? toset(["external_data_configuration_json"]) : toset([]))
+    content {
+      autodetect    = var.autodetect
+      connection_id = var.connection_id
+      source_format = var.source_format
+      source_uris   = var.source_uris
+
+      # Use the exact same schema here. This one won't be changed by BigQuery, however Terraform will still detect
+      # intentional changes to this field.
+      schema = var.schema
+
+      json_options {
+        encoding = var.json_options_encoding
+      }
+
+      hive_partitioning_options {
+        mode              = var.hive_partitioning_mode
+        source_uri_prefix = var.hive_source_uri_prefix
+      }
+    }
+  }
+
+  # Parquet - Schema disabled
+  dynamic "external_data_configuration" {
+    for_each = (var.source_format == "PARQUET" ? toset(["external_data_configuration_parquet"]) : toset([]))
+
+    content {
+      autodetect    = var.autodetect
+      connection_id = var.connection_id
+      source_format = var.source_format
+      source_uris   = var.source_uris
+
+      parquet_options {
+        enum_as_string        = var.parquet_options_enum_as_string
+        enable_list_inference = var.parquet_options_enable_list_inference
+      }
 
       hive_partitioning_options {
         mode              = var.hive_partitioning_mode

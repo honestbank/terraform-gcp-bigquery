@@ -38,6 +38,7 @@
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_external_data_source_format"></a> [external\_data\_source\_format](#input\_external\_data\_source\_format) | Source format of table must be NEWLINE\_DELIMITED\_JSON, AVRO or PARQUET | `string` | `"PARQUET"` | no |
 | <a name="input_google_credentials"></a> [google\_credentials](#input\_google\_credentials) | Google Cloud Platform credentials | `string` | n/a | yes |
 | <a name="input_google_project"></a> [google\_project](#input\_google\_project) | Project that dataset will be created | `string` | n/a | yes |
 
