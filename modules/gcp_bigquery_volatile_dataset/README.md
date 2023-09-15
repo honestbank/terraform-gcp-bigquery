@@ -6,15 +6,15 @@ This module is using for create BigQuery dataset with expirable tables which wil
 | Name | Version |
 |------|---------|
 | <a name="requirement_google"></a> [google](#requirement\_google) | >= 4.13.0 |
-| <a name="requirement_random"></a> [random](#requirement\_random) | 3.1.2 |
-| <a name="requirement_time"></a> [time](#requirement\_time) | 0.7.2 |
+| <a name="requirement_random"></a> [random](#requirement\_random) | >= 3.1.2 |
+| <a name="requirement_time"></a> [time](#requirement\_time) | >= 0.7.2 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
 | <a name="provider_google"></a> [google](#provider\_google) | >= 4.13.0 |
-| <a name="provider_random"></a> [random](#provider\_random) | 3.1.2 |
+| <a name="provider_random"></a> [random](#provider\_random) | >= 3.1.2 |
 
 ## Modules
 
@@ -28,7 +28,7 @@ No modules.
 | [google_kms_crypto_key.google_kms_crypto_key](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/kms_crypto_key) | resource |
 | [google_kms_crypto_key_iam_member.google_kms_crypto_key_iam_member](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/kms_crypto_key_iam_member) | resource |
 | [google_kms_key_ring.google_kms_key_ring](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/kms_key_ring) | resource |
-| [random_id.random_id](https://registry.terraform.io/providers/hashicorp/random/3.1.2/docs/resources/id) | resource |
+| [random_id.random_id](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/id) | resource |
 | [google_bigquery_default_service_account.google_bigquery_default_service_account](https://registry.terraform.io/providers/hashicorp/google/latest/docs/data-sources/bigquery_default_service_account) | data source |
 
 ## Inputs

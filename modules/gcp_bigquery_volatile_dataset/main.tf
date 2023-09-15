@@ -1,20 +1,3 @@
-terraform {
-  required_providers {
-    google = {
-      source  = "hashicorp/google"
-      version = ">= 4.13.0"
-    }
-    time = {
-      source  = "hashicorp/time"
-      version = "0.7.2"
-    }
-    random = {
-      source  = "hashicorp/random"
-      version = "3.1.2"
-    }
-  }
-}
-
 resource "random_id" "random_id" {
   byte_length = 4
 }

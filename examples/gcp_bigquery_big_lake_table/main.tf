@@ -2,11 +2,11 @@ terraform {
   required_providers {
     google = {
       source  = "hashicorp/google"
-      version = "~> 4.63.1"
+      version = ">= 4.63.1"
     }
     random = {
       source  = "hashicorp/random"
-      version = "3.1.2"
+      version = ">= 3.1.2"
     }
   }
 }
@@ -72,9 +72,13 @@ module "big_lake_table" {
   // source uri that let Big Lake table read the external data from GCS
   source_uris = ["gs://${google_storage_bucket.big_lake_data_source.name}/${google_storage_bucket_object.dummy_parquet_file.name}"]
 
+
   dataset_kms_key_name = module.bigquery_dataset.customer_managed_key_id
 
-  depends_on = [google_storage_bucket.big_lake_data_source, google_storage_bucket_iam_member.big_lake_connection_gcs_binding]
+  depends_on = [
+    google_storage_bucket_object.dummy_parquet_file,
+    google_storage_bucket_iam_member.big_lake_connection_gcs_binding
+  ]
 }
 
 resource "google_storage_bucket" "big_lake_data_source" {
@@ -95,8 +99,6 @@ resource "google_storage_bucket_iam_member" "big_lake_connection_gcs_binding" {
   bucket = google_storage_bucket.big_lake_data_source.id
   member = "serviceAccount:${module.big_lake_connection.service_account_id}"
   role   = "roles/storage.objectViewer"
-
-  depends_on = [module.big_lake_connection]
 }
 
 resource "google_storage_bucket_object" "dummy_parquet_file" {

@@ -1,12 +1,3 @@
-terraform {
-  required_providers {
-    google = {
-      source  = "hashicorp/google"
-      version = ">= 4.13.0"
-    }
-  }
-}
-
 resource "google_bigquery_dataset_iam_member" "google_bigquery_dataset_iam_member" {
   dataset_id = var.dataset_id
   role       = var.role

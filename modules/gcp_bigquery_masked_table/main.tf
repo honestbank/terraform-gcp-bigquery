@@ -1,12 +1,3 @@
-terraform {
-  required_providers {
-    time = {
-      source  = "hashicorp/time"
-      version = "0.7.2"
-    }
-  }
-}
-
 locals {
   schema             = [for item in var.schema : { name : item.name, type : item.type, mode : item.mode }]
   non_pii_columns    = [for item in var.schema : item.name if !item.pii]

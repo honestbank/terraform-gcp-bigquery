@@ -39,13 +39,14 @@ No outputs.
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_time"></a> [time](#requirement\_time) | 0.7.2 |
+| <a name="requirement_google"></a> [google](#requirement\_google) | >= 4.13.0 |
+| <a name="requirement_time"></a> [time](#requirement\_time) | >= 0.7.2 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_time"></a> [time](#provider\_time) | 0.7.2 |
+| <a name="provider_time"></a> [time](#provider\_time) | >= 0.7.2 |
 
 ## Modules
 
@@ -58,7 +59,7 @@ No outputs.
 
 | Name | Type |
 |------|------|
-| [time_sleep.wait_for_table](https://registry.terraform.io/providers/hashicorp/time/0.7.2/docs/resources/sleep) | resource |
+| [time_sleep.wait_for_table](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/sleep) | resource |
 
 ## Inputs
 
