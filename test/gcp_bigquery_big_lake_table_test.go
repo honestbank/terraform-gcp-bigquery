@@ -10,6 +10,8 @@ import (
 
 func TestGCPBigQueryBigLakeTable(t *testing.T) {
 	t.Run("success", func(t *testing.T) {
+		t.Parallel()
+
 		options := getOptions(t, testStructure.CopyTerraformFolderToTemp(t, "..", "examples/gcp_bigquery_big_lake_table"))
 
 		defer terraform.Destroy(t, options)
