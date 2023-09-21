@@ -38,6 +38,6 @@ No modules.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_id"></a> [id](#output\_id) | The reference ID of the created resource |
+| <a name="output_id"></a> [id](#output\_id) | The `table_id` of the created resource |
 | <a name="output_self_link"></a> [self\_link](#output\_self\_link) | The full link into the created resource |
 <!-- END_TF_DOCS -->

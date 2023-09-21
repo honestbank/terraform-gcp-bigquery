@@ -101,9 +101,9 @@ No modules.
 | Name | Description |
 |------|-------------|
 | <a name="output_dataset_customer_managed_key_id"></a> [dataset\_customer\_managed\_key\_id](#output\_dataset\_customer\_managed\_key\_id) | The reference ID of the created customer managed key |
-| <a name="output_main_dataset_id"></a> [main\_dataset\_id](#output\_main\_dataset\_id) | The reference ID of the main dataset |
+| <a name="output_main_dataset_id"></a> [main\_dataset\_id](#output\_main\_dataset\_id) | The `dataset_id` of the main dataset |
 | <a name="output_main_dataset_self_link"></a> [main\_dataset\_self\_link](#output\_main\_dataset\_self\_link) | The full link into the main dataset |
 | <a name="output_masked_dataset_customer_managed_key_id"></a> [masked\_dataset\_customer\_managed\_key\_id](#output\_masked\_dataset\_customer\_managed\_key\_id) | The reference ID of the created customer managed key |
-| <a name="output_masked_dataset_id"></a> [masked\_dataset\_id](#output\_masked\_dataset\_id) | The reference ID of the masked dataset |
+| <a name="output_masked_dataset_id"></a> [masked\_dataset\_id](#output\_masked\_dataset\_id) | The `dataset_id` of the masked dataset |
 | <a name="output_masked_dataset_self_link"></a> [masked\_dataset\_self\_link](#output\_masked\_dataset\_self\_link) | The full link into the masked dataset |
 <!-- END_TF_DOCS -->

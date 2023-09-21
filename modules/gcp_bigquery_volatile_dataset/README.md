@@ -46,7 +46,7 @@ No modules.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_customer_managed_key_id"></a> [customer\_managed\_key\_id](#output\_customer\_managed\_key\_id) | n/a |
-| <a name="output_id"></a> [id](#output\_id) | n/a |
-| <a name="output_self_link"></a> [self\_link](#output\_self\_link) | n/a |
+| <a name="output_customer_managed_key_id"></a> [customer\_managed\_key\_id](#output\_customer\_managed\_key\_id) | The `id` attribute of the created KMS crypto key |
+| <a name="output_id"></a> [id](#output\_id) | The `dataset_id` of the created BigQuery Dataset |
+| <a name="output_self_link"></a> [self\_link](#output\_self\_link) | The `self_link` attribute of the created BigQuery Dataset |
 <!-- END_TF_DOCS -->

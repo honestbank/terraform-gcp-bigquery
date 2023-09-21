@@ -45,6 +45,6 @@ No modules.
 | Name | Description |
 |------|-------------|
 | <a name="output_customer_managed_key_id"></a> [customer\_managed\_key\_id](#output\_customer\_managed\_key\_id) | The reference ID of the created customer managed key |
-| <a name="output_id"></a> [id](#output\_id) | The reference ID of the created resource |
+| <a name="output_id"></a> [id](#output\_id) | The `dataset_id` of the created resource |
 | <a name="output_self_link"></a> [self\_link](#output\_self\_link) | The full link into the created resource |
 <!-- END_TF_DOCS -->

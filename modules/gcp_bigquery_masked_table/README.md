@@ -78,6 +78,6 @@ No outputs.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_table_id"></a> [table\_id](#output\_table\_id) | The full link into the created resource |
-| <a name="output_view_id"></a> [view\_id](#output\_view\_id) | The reference ID of the created resource |
+| <a name="output_table_id"></a> [table\_id](#output\_table\_id) | The `table_id` of the created BigQuery Table |
+| <a name="output_view_id"></a> [view\_id](#output\_view\_id) | The `view_id` of the created BigQuery View |
 <!-- END_TF_DOCS -->
