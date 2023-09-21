@@ -1,6 +1,7 @@
 package test
 
 import (
+	testStructure "github.com/gruntwork-io/terratest/modules/test-structure"
 	"testing"
 
 	"github.com/gruntwork-io/terratest/modules/terraform"
@@ -9,8 +10,7 @@ import (
 
 func TestGCPBigQueryBigLakeTable(t *testing.T) {
 	t.Run("success", func(t *testing.T) {
-		//options := getOptions(t, testStructure.CopyTerraformFolderToTemp(t, "..", "examples/gcp_bigquery_big_lake_table"))
-		options := getOptions(t, "../examples/gcp_bigquery_big_lake_table")
+		options := getOptions(t, testStructure.CopyTerraformFolderToTemp(t, "..", "examples/gcp_bigquery_big_lake_table"))
 
 		defer terraform.Destroy(t, options)
 
