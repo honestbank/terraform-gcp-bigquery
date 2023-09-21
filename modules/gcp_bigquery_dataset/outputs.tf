@@ -1,5 +1,5 @@
 output "id" {
-  description = "The reference ID of the created resource"
+  description = "The `dataset_id` of the created resource"
   value       = google_bigquery_dataset.google_bigquery_dataset.dataset_id
 }
 

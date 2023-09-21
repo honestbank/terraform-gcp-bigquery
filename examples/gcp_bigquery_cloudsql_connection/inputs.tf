@@ -14,13 +14,13 @@ variable "settings_availability_type" {
 }
 
 variable "database_name" {
-  default     = "superhackers"
+  default     = "cloudsql_conn_example_db"
   description = "Database name for bigquery cloudsql connection, keep in mind one database per connection"
 }
 
 variable "user_name" {
-  default     = "haackersss"
-  description = "username for cloudsql"
+  default     = "cloudsql_connection_example_user"
+  description = "CloudSQL database username"
 }
 
 variable "database_instance_id" {

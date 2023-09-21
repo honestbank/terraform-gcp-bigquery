@@ -1,12 +1,3 @@
-terraform {
-  required_providers {
-    time = {
-      source  = "hashicorp/time"
-      version = "0.7.2"
-    }
-  }
-}
-
 locals {
   schema             = [for item in var.schema : { name : item.name, type : item.type, mode : item.mode }]
   non_pii_columns    = [for item in var.schema : item.name if !item.pii]
@@ -15,7 +6,7 @@ locals {
 
 module "table_main" {
   source                  = "../gcp_bigquery_table"
-  customer_managed_key_id = var.customer_managed_key_id
+  customer_managed_key_id = var.table_dataset_customer_managed_key_id
   dataset_id              = var.table_dataset_id
   deletion_protection     = var.deletion_protection
   description             = var.description
@@ -29,12 +20,13 @@ resource "time_sleep" "wait_for_table" {
 }
 
 module "view_masked" {
-  source              = "../gcp_bigquery_materialized_view"
-  dataset_id          = var.view_dataset_id
-  deletion_protection = var.deletion_protection
-  description         = "Materialized view with PII data masked from ${var.name} table in ${var.table_dataset_id} dataset"
-  name                = "${var.name}_view_masked"
-  query               = <<EOF
+  source                      = "../gcp_bigquery_materialized_view"
+  dataset_id                  = var.view_dataset_id
+  deletion_protection         = var.deletion_protection
+  description                 = "Materialized view with PII data masked from ${var.name} table in ${var.table_dataset_id} dataset"
+  name                        = "${var.name}_view_masked"
+  dataset_encryption_key_name = var.view_dataset_customer_managed_key_id
+  query                       = <<EOF
 SELECT
 ${join(",\n", concat(local.non_pii_columns, local.hashed_pii_columns))}
 FROM ${var.table_dataset_id}.${module.table_main.name}

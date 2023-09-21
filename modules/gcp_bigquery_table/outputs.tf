@@ -4,10 +4,11 @@ output "self_link" {
 }
 
 output "id" {
-  description = "The reference ID of the created resource"
+  description = "The `table_id` of the created resource"
   value       = google_bigquery_table.google_bigquery_table.table_id
 }
 
 output "name" {
-  value = var.name
+  description = "A passthrough of the `name` input variable"
+  value       = var.name
 }

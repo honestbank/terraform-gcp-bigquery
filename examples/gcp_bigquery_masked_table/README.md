@@ -5,16 +5,15 @@
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_google"></a> [google](#requirement\_google) | ~> 4.13.0 |
-| <a name="requirement_random"></a> [random](#requirement\_random) | 3.1.2 |
+| <a name="requirement_google"></a> [google](#requirement\_google) | >= 4.13.0 |
+| <a name="requirement_random"></a> [random](#requirement\_random) | >= 3.1.2 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | ~> 4.13.0 |
-| <a name="provider_random"></a> [random](#provider\_random) | 3.1.2 |
-| <a name="provider_time"></a> [time](#provider\_time) | n/a |
+| <a name="provider_google"></a> [google](#provider\_google) | >= 4.13.0 |
+| <a name="provider_random"></a> [random](#provider\_random) | >= 3.1.2 |
 
 ## Modules
 
@@ -28,9 +27,8 @@
 | Name | Type |
 |------|------|
 | [google_service_account.owner](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/service_account) | resource |
-| [random_id.dataset_suffix](https://registry.terraform.io/providers/hashicorp/random/3.1.2/docs/resources/id) | resource |
-| [random_id.random_id](https://registry.terraform.io/providers/hashicorp/random/3.1.2/docs/resources/id) | resource |
-| [time_sleep.sleep_before_creating_tables](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/sleep) | resource |
+| [random_id.dataset_suffix](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/id) | resource |
+| [random_id.random_id](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/id) | resource |
 
 ## Inputs
 

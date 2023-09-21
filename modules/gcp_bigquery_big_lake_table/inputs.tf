@@ -13,6 +13,11 @@ variable "dataset_id" {
   description = "A unique ID for this dataset, without the project name. The ID must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_). The maximum length is 1,024 characters."
 }
 
+variable "dataset_kms_key_name" {
+  description = "The name of the GCP KMS key used by the dataset specified in `var.dataset_id`"
+  type        = string
+}
+
 variable "deletion_protection" {
   type        = bool
   description = "Whether or not to prevent Terraform from destroying the instance."

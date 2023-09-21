@@ -2,6 +2,7 @@ output "id" {
   description = "The reference ID of the created resource"
   value       = google_bigquery_connection.big_lake_connection.id
 }
+
 output "connection_id" {
   description = "The reference ID of the created resource"
   value       = google_bigquery_connection.big_lake_connection.connection_id

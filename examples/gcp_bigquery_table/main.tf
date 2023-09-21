@@ -2,11 +2,11 @@ terraform {
   required_providers {
     google = {
       source  = "hashicorp/google"
-      version = "~> 4.13.0"
+      version = ">= 4.13.0"
     }
     random = {
       source  = "hashicorp/random"
-      version = "3.1.2"
+      version = ">= 3.1.2"
     }
   }
 }
@@ -223,14 +223,14 @@ EOF
 
 module "bigquery_table_2_materialized_view" {
   source = "../../modules/gcp_bigquery_materialized_view"
+
   // dataset id that this table will be created in
   dataset_id = module.bigquery_dataset.id
-  // name of this table, the table name will be name with run number, but the friendly name will be the same with what we set here
-  name = "service__materialized_view_name_2"
-  // description of the table
-  description = "materialized view descriptions"
-  // protect terraform from deleting the resource, set to false in this example because the test will need to be able to destroy it
-  deletion_protection = false
+
+  name                        = "service__materialized_view_name_2"
+  description                 = "materialized view descriptions"
+  deletion_protection         = false
+  dataset_encryption_key_name = module.bigquery_dataset.customer_managed_key_id
 
   query = "SELECT * FROM ${module.bigquery_dataset.id}.${module.bigquery_table_2.id}"
 }

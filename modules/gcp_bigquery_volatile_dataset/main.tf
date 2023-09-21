@@ -1,20 +1,3 @@
-terraform {
-  required_providers {
-    google = {
-      source  = "hashicorp/google"
-      version = ">= 4.13.0"
-    }
-    time = {
-      source  = "hashicorp/time"
-      version = "0.7.2"
-    }
-    random = {
-      source  = "hashicorp/random"
-      version = "3.1.2"
-    }
-  }
-}
-
 resource "random_id" "random_id" {
   byte_length = 4
 }
@@ -32,18 +15,10 @@ resource "google_kms_crypto_key" "google_kms_crypto_key" {
   rotation_period = "7776000s"
 }
 
-resource "time_sleep" "time_sleep" {
-  depends_on = [google_kms_crypto_key.google_kms_crypto_key]
-
-  create_duration = "30s"
-}
-
 data "google_bigquery_default_service_account" "google_bigquery_default_service_account" {
 }
 
 resource "google_kms_crypto_key_iam_member" "google_kms_crypto_key_iam_member" {
-  depends_on = [time_sleep.time_sleep]
-
   crypto_key_id = google_kms_crypto_key.google_kms_crypto_key.id
   role          = "roles/cloudkms.cryptoKeyEncrypterDecrypter"
   member        = "serviceAccount:${data.google_bigquery_default_service_account.google_bigquery_default_service_account.email}"

@@ -50,5 +50,8 @@ func TestGCPBigQueryTable(t *testing.T) {
 
 		assert.Equal(t, table1ID, client.Dataset(datasetLink).Table(table1ID).TableID)
 		assert.Equal(t, table2ID, client.Dataset(datasetLink).Table(table2ID).TableID)
+
+		// Ensure no drift on next run
+		ensureZeroResourceChange(t, options)
 	})
 }

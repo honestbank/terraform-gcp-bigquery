@@ -8,6 +8,11 @@ variable "name" {
   description = "A table name for the resource. Changing this forces a new resource to be created."
 }
 
+variable "dataset_encryption_key_name" {
+  description = "The KMS key used to encrypt the dataset specified in var.dataset_id"
+  type        = string
+}
+
 variable "description" {
   type        = string
   description = "The field description."

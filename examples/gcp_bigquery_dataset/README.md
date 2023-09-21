@@ -5,29 +5,29 @@
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_google"></a> [google](#requirement\_google) | ~> 4.13.0 |
-| <a name="requirement_random"></a> [random](#requirement\_random) | 3.1.2 |
+| <a name="requirement_google"></a> [google](#requirement\_google) | >= 4.13.0 |
+| <a name="requirement_random"></a> [random](#requirement\_random) | >= 3.1.2 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_google"></a> [google](#provider\_google) | ~> 4.13.0 |
-| <a name="provider_random"></a> [random](#provider\_random) | 3.1.2 |
+| <a name="provider_google"></a> [google](#provider\_google) | >= 4.13.0 |
+| <a name="provider_random"></a> [random](#provider\_random) | >= 3.1.2 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_bigquery_dataset"></a> [bigquery\_dataset](#module\_bigquery\_dataset) | ../../modules/gcp_bigquery_dataset | n/a |
-| <a name="module_create_bigquery_volatile_dataset"></a> [create\_bigquery\_volatile\_dataset](#module\_create\_bigquery\_volatile\_dataset) | ../../modules/gcp_bigquery_volatile_dataset | n/a |
+| <a name="module_bigquery_volatile_dataset"></a> [bigquery\_volatile\_dataset](#module\_bigquery\_volatile\_dataset) | ../../modules/gcp_bigquery_volatile_dataset | n/a |
 
 ## Resources
 
 | Name | Type |
 |------|------|
 | [google_service_account.owner](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/service_account) | resource |
-| [random_id.random_id](https://registry.terraform.io/providers/hashicorp/random/3.1.2/docs/resources/id) | resource |
+| [random_id.random_id](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/id) | resource |
 
 ## Inputs
 

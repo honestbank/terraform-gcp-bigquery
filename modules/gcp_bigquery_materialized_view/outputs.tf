@@ -4,6 +4,6 @@ output "self_link" {
 }
 
 output "id" {
-  description = "The reference ID of the created resource"
+  description = "The `table_id` of the created resource"
   value       = google_bigquery_table.materialized_view.table_id
 }
