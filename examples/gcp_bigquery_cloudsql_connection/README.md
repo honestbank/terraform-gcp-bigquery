@@ -43,7 +43,7 @@
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_database_instance_id"></a> [database\_instance\_id](#input\_database\_instance\_id) | Database name for bigquery cloudsql connection, keep in mind one database per connection | `string` | `""` | no |
-| <a name="input_database_name"></a> [database\_name](#input\_database\_name) | Database name for bigquery cloudsql connection, keep in mind one database per connection | `string` | `"superhackers"` | no |
+| <a name="input_database_name"></a> [database\_name](#input\_database\_name) | Database name for bigquery cloudsql connection, keep in mind one database per connection | `string` | `"cloudsql_conn_example_db"` | no |
 | <a name="input_gcp_region"></a> [gcp\_region](#input\_gcp\_region) | Default region for gcp project | `string` | `"asia-southeast2"` | no |
 | <a name="input_google_credentials"></a> [google\_credentials](#input\_google\_credentials) | JSON GCP IAM credentials that have GCP Owner and BigQuery Admin Role granted | `string` | n/a | yes |
 | <a name="input_google_project"></a> [google\_project](#input\_google\_project) | Project where Bigquery resources will be created | `string` | n/a | yes |

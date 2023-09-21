@@ -14,7 +14,7 @@ variable "settings_availability_type" {
 }
 
 variable "database_name" {
-  default     = "superhackers"
+  default     = "cloudsql_conn_example_db"
   description = "Database name for bigquery cloudsql connection, keep in mind one database per connection"
 }
 
