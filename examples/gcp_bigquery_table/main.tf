@@ -38,6 +38,7 @@ module "bigquery_dataset" {
 
 // creating the BigQuery table
 module "bigquery_table_1" {
+  #checkov:skip=CKV_GCP_121:Deletion protection is not needed for test resources.
   source = "../../modules/gcp_bigquery_table"
   // dataset id that this table will be created in
   dataset_id = module.bigquery_dataset.id
@@ -53,6 +54,7 @@ module "bigquery_table_1" {
 
 // creating the BigQuery table with Schema
 module "bigquery_table_2" {
+  #checkov:skip=CKV_GCP_121:Deletion protection is not needed for test resources.
   source = "../../modules/gcp_bigquery_table"
   // dataset id that this table will be created in
   dataset_id = module.bigquery_dataset.id
@@ -222,6 +224,7 @@ EOF
 }
 
 module "bigquery_table_2_materialized_view" {
+  #checkov:skip=CKV_GCP_121:Deletion protection is not needed for test resources.
   source = "../../modules/gcp_bigquery_materialized_view"
 
   // dataset id that this table will be created in

@@ -50,6 +50,7 @@ module "big_lake_connection" {
 
 // creating the BigQuery Big Lake table
 module "big_lake_table" {
+  #checkov:skip=CKV_GCP_121:Deletion protection is not needed for test resources.
   source = "../../modules/gcp_bigquery_big_lake_table"
 
   // Let the table detect schema automatically
@@ -98,7 +99,7 @@ resource "random_id" "big_lake_data_source_random_id" {
 resource "google_storage_bucket_iam_member" "big_lake_connection_gcs_binding" {
   bucket = google_storage_bucket.big_lake_data_source.id
   member = "serviceAccount:${module.big_lake_connection.service_account_id}"
-  role   = "roles/storage.objectViewer"
+  role   = "roles/storage.objectUser"
 }
 
 resource "google_storage_bucket_object" "dummy_parquet_file" {

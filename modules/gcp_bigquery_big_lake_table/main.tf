@@ -12,7 +12,7 @@ resource "google_bigquery_table" "google_bigquery_table" {
   table_id            = var.name
 
   # Terraform will detect changes to this property made by BigQuery, but we'll ignore them using the `lifecycle` block.
-  schema = var.schema
+  schema = var.schema == "" ? null : var.schema
 
   encryption_configuration {
     kms_key_name = var.dataset_kms_key_name
