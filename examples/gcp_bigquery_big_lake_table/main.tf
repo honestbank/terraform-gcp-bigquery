@@ -50,6 +50,7 @@ module "big_lake_connection" {
 
 // creating the BigQuery Big Lake table
 module "big_lake_table" {
+  #checkov:skip=CKV_GCP_121:Deletion protection is not needed for test resources.
   source = "../../modules/gcp_bigquery_big_lake_table"
 
   // Let the table detect schema automatically
