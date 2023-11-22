@@ -5,6 +5,7 @@ locals {
 }
 
 module "table_main" {
+  #checkov:skip=CKV_GCP_121:Deletion protection depends on input.
   source                  = "../gcp_bigquery_table"
   customer_managed_key_id = var.table_dataset_customer_managed_key_id
   dataset_id              = var.table_dataset_id
