@@ -2,7 +2,7 @@ locals {
   # All possible source formats: https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externaldataconfiguration
   # Schema disabled source_formats: https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/bigquery_table#schema
   schema_disabled_source_formats = ["GOOGLE_SHEETS", "PARQUET", "AVRO", "ORC", "DATASTORE_BACKUP", "BIGTABLE"]
-  source_uris                    = length(coalesce(var.source_uris, [])) > 0 ? var.source_uris : ["${var.hive_source_uri_prefix}/*"]
+  source_uris                    = length(var.source_uris) > 0 ? var.source_uris : ["${var.hive_source_uri_prefix}/*"]
 }
 
 resource "google_bigquery_table" "google_bigquery_table" {

@@ -73,5 +73,5 @@ variable "source_format" {
 variable "source_uris" {
   type        = list(string)
   description = "A list of the fully-qualified URIs that point to your data in Google Cloud. https://cloud.google.com/bigquery/docs/external-data-cloud-storage#wildcard-support"
-  default     = null
+  default     = []
 }
