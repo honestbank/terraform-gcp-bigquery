@@ -22,6 +22,7 @@ variable "schema" {
 variable "deletion_protection" {
   type        = bool
   description = "Whether or not to prevent Terraform from destroying the instance."
+  default     = true
 }
 
 variable "customer_managed_key_id" {
