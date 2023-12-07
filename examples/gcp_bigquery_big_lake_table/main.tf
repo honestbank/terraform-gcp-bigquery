@@ -44,7 +44,7 @@ module "bigquery_dataset" {
 
 module "big_lake_connection" {
   source        = "../../modules/gcp_bigquery_big_lake_connection"
-  connection_id = "big_lake_connection"
+  connection_id = "big_lake_connection_${random_id.random_id.hex}"
   location      = local.CONST_GOOGLE_REGION_JAKARTA
 }
 
