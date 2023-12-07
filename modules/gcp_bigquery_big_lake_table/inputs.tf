@@ -44,8 +44,8 @@ variable "hive_source_uri_prefix" {
   type        = string
   description = "A common for all source uris must be required. The prefix must end immediately before the partition key encoding begins"
   validation {
-    condition     = !endswith(var.hive_source_uri_prefix, "/") && !endswith(var.hive_source_uri_prefix, "*")
-    error_message = "hive_source_uri_prefix should not end with a `/` or `*`"
+    condition     = !endswith(var.hive_source_uri_prefix, "*")
+    error_message = "hive_source_uri_prefix should not end with an `*`"
   }
 }
 
