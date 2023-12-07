@@ -1,6 +1,7 @@
 variable "autodetect" {
   type        = bool
   description = "Let BigQuery try to autodetect the schema and format of the table."
+  default     = true
 }
 
 variable "connection_id" {
@@ -21,6 +22,7 @@ variable "dataset_kms_key_name" {
 variable "deletion_protection" {
   type        = bool
   description = "Whether or not to prevent Terraform from destroying the instance."
+  default     = false
 }
 
 variable "description" {
@@ -35,12 +37,18 @@ variable "hive_partitioning_mode" {
     condition     = contains(["AUTO", "STRINGS", "CUSTOM"], var.hive_partitioning_mode)
     error_message = "Source format of table must be NEWLINE_DELIMITED_JSON, AVRO or PARQUET"
   }
+  default = "AUTO"
 }
 
 variable "hive_source_uri_prefix" {
   type        = string
   description = "A common for all source uris must be required. The prefix must end immediately before the partition key encoding begins"
+  validation {
+    condition     = !endswith(var.hive_source_uri_prefix, "*")
+    error_message = "hive_source_uri_prefix should not end with an `*`"
+  }
 }
+
 variable "name" {
   type        = string
   description = "A table name for the resource. Changing this forces a new resource to be created."
@@ -59,9 +67,11 @@ variable "source_format" {
     condition     = contains(["NEWLINE_DELIMITED_JSON", "AVRO", "PARQUET"], var.source_format)
     error_message = "Source format of table must be NEWLINE_DELIMITED_JSON, AVRO or PARQUET"
   }
+  default = "PARQUET"
 }
 
 variable "source_uris" {
   type        = list(string)
   description = "A list of the fully-qualified URIs that point to your data in Google Cloud. https://cloud.google.com/bigquery/docs/external-data-cloud-storage#wildcard-support"
+  default     = []
 }

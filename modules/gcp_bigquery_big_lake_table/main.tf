@@ -2,6 +2,7 @@ locals {
   # All possible source formats: https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externaldataconfiguration
   # Schema disabled source_formats: https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/bigquery_table#schema
   schema_disabled_source_formats = ["GOOGLE_SHEETS", "PARQUET", "AVRO", "ORC", "DATASTORE_BACKUP", "BIGTABLE"]
+  source_uris                    = length(var.source_uris) > 0 ? var.source_uris : ["${trim(var.hive_source_uri_prefix, "/")}/*"]
 }
 
 resource "google_bigquery_table" "google_bigquery_table" {
@@ -24,7 +25,7 @@ resource "google_bigquery_table" "google_bigquery_table" {
       autodetect    = var.autodetect
       connection_id = var.connection_id
       source_format = var.source_format
-      source_uris   = var.source_uris
+      source_uris   = local.source_uris
 
       hive_partitioning_options {
         mode              = var.hive_partitioning_mode
@@ -39,7 +40,7 @@ resource "google_bigquery_table" "google_bigquery_table" {
       autodetect    = var.autodetect
       connection_id = var.connection_id
       source_format = var.source_format
-      source_uris   = var.source_uris
+      source_uris   = local.source_uris
 
       # Use the exact same schema here. This one won't be changed by BigQuery, however Terraform will still detect
       # intentional changes to this field.
