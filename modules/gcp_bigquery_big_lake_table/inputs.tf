@@ -9,6 +9,19 @@ variable "connection_id" {
   description = "The connection specifying the credentials to be used to read external storage for Big Lake table"
 }
 
+variable "csv_options" {
+  type = object(
+    {
+      field_delimiter = optional(string)
+      # Default quote is required, see https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/bigquery_table#quote
+      quote             = optional(string, "\"")
+      skip_leading_rows = optional(number)
+    }
+  )
+  default     = null
+  description = "Options for CSV data."
+}
+
 variable "dataset_id" {
   type        = string
   description = "A unique ID for this dataset, without the project name. The ID must contain only letters (a-z, A-Z), numbers (0-9), or underscores (_). The maximum length is 1,024 characters."
