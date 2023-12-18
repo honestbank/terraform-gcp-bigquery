@@ -24,6 +24,7 @@ func TestGCPBigQueryBigLakeTable(t *testing.T) {
 
 		assert.NotEmpty(t, id)
 		assert.NotEmpty(t, link)
+		assert.NotEmpty(t, terraform.Output(t, options, "partitioned_csv_big_lake_table_id"))
 
 		// Ensure no drift on next run
 		ensureZeroResourceChange(t, options)
