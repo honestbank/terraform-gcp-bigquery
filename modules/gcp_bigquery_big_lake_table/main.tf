@@ -13,7 +13,7 @@ resource "google_bigquery_table" "google_bigquery_table" {
   table_id            = var.name
 
   # Terraform will detect changes to this property made by BigQuery, but we'll ignore them using the `lifecycle` block.
-  schema = var.schema == "" ? null : var.schema
+  schema = (var.schema == "" || var.connection_id == null) ? null : var.schema
 
   encryption_configuration {
     kms_key_name = var.dataset_kms_key_name
@@ -42,9 +42,12 @@ resource "google_bigquery_table" "google_bigquery_table" {
       source_format = var.source_format
       source_uris   = local.source_uris
 
-      # Use the exact same schema here. This one won't be changed by BigQuery, however Terraform will still detect
-      # intentional changes to this field.
-      schema = var.schema
+      # See https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/bigquery_table#nested_hive_partitioning_options
+      # If you use external_data_configuration documented below and do not set
+      # external_data_configuration.connection_id, schemas must be specified with
+      # external_data_configuration.schema. Otherwise, schemas must be specified
+      # with this top-level field.
+      schema = var.connection_id == null ? var.schema : null
 
       hive_partitioning_options {
         mode              = var.hive_partitioning_mode

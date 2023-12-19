@@ -17,6 +17,7 @@ resource "random_id" "random_id" {
 
 locals {
   CONST_GOOGLE_REGION_JAKARTA          = "asia-southeast2"
+  CONST_BIGQUERY_SOURCE_FORMAT_CSV     = "CSV"
   CONST_BIGQUERY_SOURCE_FORMAT_PARQUET = "PARQUET"
 }
 
@@ -65,7 +66,7 @@ module "big_lake_table" {
   description = "table descriptions"
 
   hive_partitioning_mode = "AUTO"
-  hive_source_uri_prefix = "gs://${google_storage_bucket.big_lake_data_source.name}/"
+  hive_source_uri_prefix = "gs://${google_storage_bucket.big_lake_data_source.name}/parquet/"
   // name of this table, the table name will be name with run number, but the friendly name will be the same with what we set here
   name = "big_lake_table"
   // Format of source NEWLINE_DELIMITED_JSON, AVRO, PARQUET
@@ -78,6 +79,34 @@ module "big_lake_table" {
 
   depends_on = [
     google_storage_bucket_object.dummy_parquet_file,
+    google_storage_bucket_iam_member.big_lake_connection_gcs_binding
+  ]
+}
+
+module "partitioned_csv_big_lake_table" {
+  #checkov:skip=CKV_GCP_121:Deletion protection is not needed for test resources.
+  source = "../../modules/gcp_bigquery_big_lake_table"
+
+  autodetect          = false
+  connection_id       = module.big_lake_connection.id
+  dataset_id          = module.bigquery_dataset.id
+  deletion_protection = false
+  description         = "A partitioned CSV table"
+
+  hive_partitioning_mode = "CUSTOM"
+  hive_source_uri_prefix = "gs://${google_storage_bucket.big_lake_data_source.name}/csv/{year:INTEGER}/{month:INTEGER}/{day:INTEGER}"
+  name                   = "partitioned_csv_big_lake_table"
+  schema = jsonencode([
+    { name : "dummy", type : "STRING", mode : "NULLABLE" },
+  ])
+  source_format = local.CONST_BIGQUERY_SOURCE_FORMAT_CSV
+  source_uris   = ["gs://${google_storage_bucket.big_lake_data_source.name}/csv/*.csv"]
+
+
+  dataset_kms_key_name = module.bigquery_dataset.customer_managed_key_id
+
+  depends_on = [
+    google_storage_bucket_object.dummy_csv_file,
     google_storage_bucket_iam_member.big_lake_connection_gcs_binding
   ]
 }
@@ -104,7 +133,14 @@ resource "google_storage_bucket_iam_member" "big_lake_connection_gcs_binding" {
 
 resource "google_storage_bucket_object" "dummy_parquet_file" {
   bucket       = google_storage_bucket.big_lake_data_source.id
-  name         = "lang=en/test.parquet"
+  name         = "parquet/lang=en/test.parquet"
   source       = "./test.parquet"
+  content_type = "text/plain"
+}
+
+resource "google_storage_bucket_object" "dummy_csv_file" {
+  bucket       = google_storage_bucket.big_lake_data_source.id
+  name         = "csv/year=2023/month=12/day=18/test.csv"
+  content      = "hello"
   content_type = "text/plain"
 }
