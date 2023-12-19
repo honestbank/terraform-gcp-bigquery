@@ -97,10 +97,15 @@ module "partitioned_csv_big_lake_table" {
   hive_source_uri_prefix = "gs://${google_storage_bucket.big_lake_data_source.name}/csv/{year:INTEGER}/{month:INTEGER}/{day:INTEGER}"
   name                   = "partitioned_csv_big_lake_table"
   schema = jsonencode([
-    { name : "dummy", type : "STRING", mode : "NULLABLE" },
+    { name : "column1", type : "STRING", mode : "NULLABLE" },
+    { name : "column2", type : "STRING", mode : "NULLABLE" },
   ])
   source_format = local.CONST_BIGQUERY_SOURCE_FORMAT_CSV
   source_uris   = ["gs://${google_storage_bucket.big_lake_data_source.name}/csv/*.csv"]
+  csv_options = {
+    skip_leading_rows = 1
+    field_delimiter   = "|"
+  }
 
 
   dataset_kms_key_name = module.bigquery_dataset.customer_managed_key_id
@@ -141,6 +146,9 @@ resource "google_storage_bucket_object" "dummy_parquet_file" {
 resource "google_storage_bucket_object" "dummy_csv_file" {
   bucket       = google_storage_bucket.big_lake_data_source.id
   name         = "csv/year=2023/month=12/day=18/test.csv"
-  content      = "hello"
+  content      = <<-EOT
+  header1|header2
+  hello|world
+  EOT
   content_type = "text/plain"
 }

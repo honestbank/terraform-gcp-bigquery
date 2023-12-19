@@ -39,6 +39,11 @@ resource "google_bigquery_table" "google_bigquery_table" {
     content {
       autodetect    = var.autodetect
       connection_id = var.connection_id
+      csv_options {
+        field_delimiter   = var.csv_options.field_delimiter
+        quote             = var.csv_options.quote
+        skip_leading_rows = var.csv_options.skip_leading_rows
+      }
       source_format = var.source_format
       source_uris   = local.source_uris
 
