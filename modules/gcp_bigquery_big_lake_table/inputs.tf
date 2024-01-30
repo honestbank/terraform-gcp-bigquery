@@ -55,10 +55,10 @@ variable "description" {
 
 variable "hive_partitioning_mode" {
   type        = string
-  description = "what mode of hive partitioning to use when reading data. The following modes are supported AUTO, STRINGS, and CUSTOM"
+  description = "what mode of hive partitioning to use when reading data. The following modes are supported AUTO, CUSTOM, or STRINGS"
   validation {
-    condition     = contains(["AUTO", "STRINGS", "CUSTOM"], var.hive_partitioning_mode)
-    error_message = "Source format of table must be NEWLINE_DELIMITED_JSON, AVRO or PARQUET"
+    condition     = contains(["AUTO", "CUSTOM", "STRINGS"], var.hive_partitioning_mode)
+    error_message = "Hive partitioning mod must be AUTO, CUSTOM, or STRINGS"
   }
   default = "AUTO"
 }
@@ -85,10 +85,10 @@ variable "schema" {
 
 variable "source_format" {
   type        = string
-  description = "Source format of table must be NEWLINE_DELIMITED_JSON, AVRO, PARQUET or CSV"
+  description = "Source format of table must be AVRO, CSV, JSON, or PARQUET"
   validation {
-    condition     = contains(["NEWLINE_DELIMITED_JSON", "AVRO", "PARQUET", "CSV"], var.source_format)
-    error_message = "Source format of table must be NEWLINE_DELIMITED_JSON, AVRO, PARQUET or CSV"
+    condition     = contains(["AVRO", "CSV", "JSON", "PARQUET"], var.source_format)
+    error_message = "Source format of table must be AVRO, CSV, JSON, or PARQUET"
   }
   default = "PARQUET"
 }
