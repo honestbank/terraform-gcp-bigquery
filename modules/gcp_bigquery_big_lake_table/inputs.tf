@@ -4,6 +4,16 @@ variable "autodetect" {
   default     = true
 }
 
+variable "source_compression" {
+  type        = string
+  description = "Source data compression format. NONE or GZIP."
+  validation {
+    condition     = contains(["NONE", "GZIP"], var.source_compression)
+    error_message = "source_compression can only be NONE or GZIP"
+  }
+  default = "NONE"
+}
+
 variable "connection_id" {
   type        = string
   description = "The connection specifying the credentials to be used to read external storage for Big Lake table"
