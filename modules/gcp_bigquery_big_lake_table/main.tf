@@ -28,6 +28,15 @@ resource "google_bigquery_table" "google_bigquery_table" {
       source_format = var.source_format
       source_uris   = local.source_uris
 
+      dynamic "csv_options" {
+        for_each = var.source_format == "CSV" ? toset(["csv_options"]) : toset([])
+        content {
+          field_delimiter   = var.csv_options.field_delimiter
+          quote             = var.csv_options.quote
+          skip_leading_rows = var.csv_options.skip_leading_rows
+        }
+      }
+
       hive_partitioning_options {
         mode              = var.hive_partitioning_mode
         source_uri_prefix = var.hive_source_uri_prefix
@@ -40,14 +49,18 @@ resource "google_bigquery_table" "google_bigquery_table" {
     content {
       autodetect    = var.autodetect
       connection_id = var.connection_id
-      csv_options {
-        field_delimiter   = var.csv_options.field_delimiter
-        quote             = var.csv_options.quote
-        skip_leading_rows = var.csv_options.skip_leading_rows
-      }
       compression   = var.source_compression
       source_format = var.source_format
       source_uris   = local.source_uris
+
+      dynamic "csv_options" {
+        for_each = var.source_format == "CSV" ? toset(["csv_options"]) : toset([])
+        content {
+          field_delimiter   = var.csv_options.field_delimiter
+          quote             = var.csv_options.quote
+          skip_leading_rows = var.csv_options.skip_leading_rows
+        }
+      }
 
       # See https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/bigquery_table#nested_hive_partitioning_options
       # If you use external_data_configuration documented below and do not set
