@@ -24,6 +24,7 @@ resource "google_bigquery_table" "google_bigquery_table" {
     content {
       autodetect    = var.autodetect
       connection_id = var.connection_id
+      compression   = var.source_compression
       source_format = var.source_format
       source_uris   = local.source_uris
 
@@ -44,6 +45,7 @@ resource "google_bigquery_table" "google_bigquery_table" {
         quote             = var.csv_options.quote
         skip_leading_rows = var.csv_options.skip_leading_rows
       }
+      compression   = var.source_compression
       source_format = var.source_format
       source_uris   = local.source_uris
 
