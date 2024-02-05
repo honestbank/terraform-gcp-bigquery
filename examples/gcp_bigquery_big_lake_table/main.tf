@@ -166,7 +166,7 @@ module "partitioned_csv_big_lake_table" {
   description         = "A partitioned CSV table"
 
   hive_partitioning_mode = "CUSTOM"
-  hive_source_uri_prefix = "gs://${google_storage_bucket.big_lake_data_source.name}/csv/"
+  hive_source_uri_prefix = "gs://${google_storage_bucket.big_lake_data_source.name}/csv/{year:INTEGER}/{month:INTEGER}/{day:INTEGER}/"
   name                   = "partitioned_csv_big_lake_table"
   schema = jsonencode([
     { name : "column1", type : "STRING", mode : "NULLABLE" },
