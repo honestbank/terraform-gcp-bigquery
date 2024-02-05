@@ -66,14 +66,14 @@ module "avro_big_lake_table" {
   // description of the table
   description = "table descriptions"
 
-  hive_partitioning_mode = "AUTO"
-  hive_source_uri_prefix = "gs://${google_storage_bucket.big_lake_data_source.name}/avro/"
+  hive_partitioning_mode = "CUSTOM"
+  hive_source_uri_prefix = "gs://${google_storage_bucket.big_lake_data_source.name}/avro/{year:INTEGER}/{month:INTEGER}/{day:INTEGER}/"
   // name of this table, the table name will be name with run number, but the friendly name will be the same with what we set here
   name = "big_lake_table"
   // Format of source AVRO, CSV, NEWLINE_DELIMITED_JSON, PARQUET
   source_format = local.CONST_BIGQUERY_SOURCE_FORMAT_AVRO
   // source uri that let Big Lake table read the external data from GCS
-  source_uris = ["gs://${google_storage_bucket.big_lake_data_source.name}/${google_storage_bucket_object.dummy_file["AVRO"].name}"]
+  source_uris = ["gs://${google_storage_bucket.big_lake_data_source.name}/avro/*.avro"]
   avro_options = {
     use_avro_logical_types = "false"
   }
@@ -102,14 +102,14 @@ module "big_lake_table" {
   // description of the table
   description = "table descriptions"
 
-  hive_partitioning_mode = "AUTO"
-  hive_source_uri_prefix = "gs://${google_storage_bucket.big_lake_data_source.name}/parquet/"
+  hive_partitioning_mode = "CUSTOM"
+  hive_source_uri_prefix = "gs://${google_storage_bucket.big_lake_data_source.name}/parquet/{year:INTEGER}/{month:INTEGER}/{day:INTEGER}/"
   // name of this table, the table name will be name with run number, but the friendly name will be the same with what we set here
   name = "big_lake_table"
   // Format of source AVRO, CSV, NEWLINE_DELIMITED_JSON, PARQUET
   source_format = local.CONST_BIGQUERY_SOURCE_FORMAT_PARQUET
   // source uri that let Big Lake table read the external data from GCS
-  source_uris = ["gs://${google_storage_bucket.big_lake_data_source.name}/${google_storage_bucket_object.dummy_file["PARQUET"].name}"]
+  source_uris = ["gs://${google_storage_bucket.big_lake_data_source.name}/parquet/*.parquet"]
 
 
   dataset_kms_key_name = module.bigquery_dataset.customer_managed_key_id
@@ -135,14 +135,14 @@ module "json_big_lake_table" {
   // description of the table
   description = "table descriptions"
 
-  hive_partitioning_mode = "AUTO"
-  hive_source_uri_prefix = "gs://${google_storage_bucket.big_lake_data_source.name}/json/"
+  hive_partitioning_mode = "CUSTOM"
+  hive_source_uri_prefix = "gs://${google_storage_bucket.big_lake_data_source.name}/json/{year:INTEGER}/{month:INTEGER}/{day:INTEGER}/"
   // name of this table, the table name will be name with run number, but the friendly name will be the same with what we set here
   name = "big_lake_table"
   // Format of source AVRO, CSV, NEWLINE_DELIMITED_JSON, PARQUET
   source_format = local.CONST_BIGQUERY_SOURCE_FORMAT_JSON
   // source uri that let Big Lake table read the external data from GCS
-  source_uris = ["gs://${google_storage_bucket.big_lake_data_source.name}/${google_storage_bucket_object.dummy_file["NEWLINE_DELIMITED_JSON"].name}"]
+  source_uris = ["gs://${google_storage_bucket.big_lake_data_source.name}/json/*.json"]
   json_options = {
     encoding = "UTF-8"
   }
@@ -173,7 +173,7 @@ module "partitioned_csv_big_lake_table" {
     { name : "column2", type : "STRING", mode : "NULLABLE" },
   ])
   source_format = local.CONST_BIGQUERY_SOURCE_FORMAT_CSV
-  source_uris   = ["gs://${google_storage_bucket.big_lake_data_source.name}/${google_storage_bucket_object.dummy_file["CSV"].name}"]
+  source_uris   = ["gs://${google_storage_bucket.big_lake_data_source.name}/csv/*.csv"]
   csv_options = {
     skip_leading_rows = 1
     field_delimiter   = "|"
@@ -224,7 +224,7 @@ locals {
 resource "google_storage_bucket_object" "dummy_file" {
   for_each     = toset(["AVRO", "CSV", "NEWLINE_DELIMITED_JSON", "PARQUET"])
   bucket       = google_storage_bucket.big_lake_data_source.id
-  name         = "lang=en/test.${local.file_extensions[each.key]}"
+  name         = "${local.file_extensions[each.key]}/year=2024/month=2/day=5/test.${local.file_extensions[each.key]}"
   source       = "./test.${local.file_extensions[each.key]}"
   content_type = "text/plain"
 }
