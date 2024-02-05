@@ -210,10 +210,10 @@ resource "google_storage_bucket_iam_member" "big_lake_connection_gcs_binding" {
 
 locals {
   file_extensions = {
-    AVRO    = "avro",
-    CSV     = "csv",
-    NEWLINE_DELIMITED_JSON    = "json",
-    PARQUET = "parquet",
+    AVRO                   = "avro",
+    CSV                    = "csv",
+    NEWLINE_DELIMITED_JSON = "json",
+    PARQUET                = "parquet",
   }
 }
 
