@@ -22,6 +22,7 @@
 | <a name="module_big_lake_connection"></a> [big\_lake\_connection](#module\_big\_lake\_connection) | ../../modules/gcp_bigquery_big_lake_connection | n/a |
 | <a name="module_big_lake_table"></a> [big\_lake\_table](#module\_big\_lake\_table) | ../../modules/gcp_bigquery_big_lake_table | n/a |
 | <a name="module_bigquery_dataset"></a> [bigquery\_dataset](#module\_bigquery\_dataset) | ../../modules/gcp_bigquery_dataset | n/a |
+| <a name="module_json_big_lake_table"></a> [json\_big\_lake\_table](#module\_json\_big\_lake\_table) | ../../modules/gcp_bigquery_big_lake_table | n/a |
 | <a name="module_partitioned_csv_big_lake_table"></a> [partitioned\_csv\_big\_lake\_table](#module\_partitioned\_csv\_big\_lake\_table) | ../../modules/gcp_bigquery_big_lake_table | n/a |
 
 ## Resources
