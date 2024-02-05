@@ -131,10 +131,10 @@ variable "schema" {
 
 variable "source_format" {
   type        = string
-  description = "Source data format - AVRO, CSV, JSON, PARQUET currently supported."
+  description = "Source data format - AVRO, CSV, NEWLINE_DELIMITED_JSON, PARQUET currently supported."
   validation {
-    condition     = contains(["AVRO", "CSV", "JSON", "PARQUET"], var.source_format)
-    error_message = "Source format of table must be one of AVRO, CSV, JSON, PARQUET."
+    condition     = contains(["AVRO", "CSV", "NEWLINE_DELIMITED_JSON", "PARQUET"], var.source_format)
+    error_message = "Source format of table must be one of AVRO, CSV, NEWLINE_DELIMITED_JSON, PARQUET."
   }
   default = "PARQUET"
 }

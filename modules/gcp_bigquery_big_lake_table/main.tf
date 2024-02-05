@@ -1,7 +1,7 @@
 locals {
   # All possible source formats: https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externaldataconfiguration
   # Schema disabled source_formats: https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/bigquery_table#schema
-  schema_disabled_source_formats = ["GOOGLE_SHEETS", "PARQUET", "AVRO", "ORC", "DATASTORE_BACKUP", "BIGTABLE", "JSON"]
+  schema_disabled_source_formats = ["GOOGLE_SHEETS", "PARQUET", "AVRO", "ORC", "DATASTORE_BACKUP", "BIGTABLE", "NEWLINE_DELIMITED_JSON"]
   source_uris                    = length(var.source_uris) > 0 ? var.source_uris : ["${trim(var.hive_source_uri_prefix, "/")}/*"]
 }
 
@@ -19,7 +19,7 @@ resource "google_bigquery_table" "google_bigquery_table" {
     kms_key_name = var.dataset_kms_key_name
   }
 
-  # Schema disabled configuration, containing AVRO, JSON, and Parquet
+  # Schema disabled configuration, containing AVRO, NEWLINE_DELIMITED_JSON, and Parquet
   dynamic "external_data_configuration" {
     for_each = (contains(local.schema_disabled_source_formats, var.source_format) == true ? toset(["external_data_configuration"]) : toset([]))
     content {
@@ -37,7 +37,7 @@ resource "google_bigquery_table" "google_bigquery_table" {
       }
 
       dynamic "json_options" {
-        for_each = var.source_format == "JSON" && var.json_options != null ? toset(["json_options"]) : toset([])
+        for_each = var.source_format == "NEWLINE_DELIMITED_JSON" && var.json_options != null ? toset(["json_options"]) : toset([])
         content {
           encoding = var.json_options.encoding
         }

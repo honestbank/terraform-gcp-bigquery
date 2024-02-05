@@ -19,7 +19,7 @@ locals {
   CONST_GOOGLE_REGION_JAKARTA          = "asia-southeast2"
   CONST_BIGQUERY_SOURCE_FORMAT_AVRO    = "AVRO"
   CONST_BIGQUERY_SOURCE_FORMAT_CSV     = "CSV"
-  CONST_BIGQUERY_SOURCE_FORMAT_JSON    = "JSON"
+  CONST_BIGQUERY_SOURCE_FORMAT_JSON    = "NEWLINE_DELIMITED_JSON"
   CONST_BIGQUERY_SOURCE_FORMAT_PARQUET = "PARQUET"
 }
 
@@ -70,7 +70,7 @@ module "avro_big_lake_table" {
   hive_source_uri_prefix = "gs://${google_storage_bucket.big_lake_data_source.name}/avro/"
   // name of this table, the table name will be name with run number, but the friendly name will be the same with what we set here
   name = "big_lake_table"
-  // Format of source AVRO, CSV, JSON, PARQUET
+  // Format of source AVRO, CSV, NEWLINE_DELIMITED_JSON, PARQUET
   source_format = local.CONST_BIGQUERY_SOURCE_FORMAT_AVRO
   // source uri that let Big Lake table read the external data from GCS
   source_uris = ["gs://${google_storage_bucket.big_lake_data_source.name}/${google_storage_bucket_object.dummy_file["AVRO"].name}"]
@@ -106,7 +106,7 @@ module "big_lake_table" {
   hive_source_uri_prefix = "gs://${google_storage_bucket.big_lake_data_source.name}/parquet/"
   // name of this table, the table name will be name with run number, but the friendly name will be the same with what we set here
   name = "big_lake_table"
-  // Format of source AVRO, CSV, JSON, PARQUET
+  // Format of source AVRO, CSV, NEWLINE_DELIMITED_JSON, PARQUET
   source_format = local.CONST_BIGQUERY_SOURCE_FORMAT_PARQUET
   // source uri that let Big Lake table read the external data from GCS
   source_uris = ["gs://${google_storage_bucket.big_lake_data_source.name}/${google_storage_bucket_object.dummy_file["PARQUET"].name}"]
@@ -139,10 +139,10 @@ module "json_big_lake_table" {
   hive_source_uri_prefix = "gs://${google_storage_bucket.big_lake_data_source.name}/json/"
   // name of this table, the table name will be name with run number, but the friendly name will be the same with what we set here
   name = "big_lake_table"
-  // Format of source AVRO, CSV, JSON, PARQUET
+  // Format of source AVRO, CSV, NEWLINE_DELIMITED_JSON, PARQUET
   source_format = local.CONST_BIGQUERY_SOURCE_FORMAT_JSON
   // source uri that let Big Lake table read the external data from GCS
-  source_uris = ["gs://${google_storage_bucket.big_lake_data_source.name}/${google_storage_bucket_object.dummy_file["JSON"].name}"]
+  source_uris = ["gs://${google_storage_bucket.big_lake_data_source.name}/${google_storage_bucket_object.dummy_file["NEWLINE_DELIMITED_JSON"].name}"]
   json_options = {
     encoding = "UTF-8"
   }
@@ -150,7 +150,7 @@ module "json_big_lake_table" {
   dataset_kms_key_name = module.bigquery_dataset.customer_managed_key_id
 
   depends_on = [
-    google_storage_bucket_object.dummy_file["JSON"],
+    google_storage_bucket_object.dummy_file["NEWLINE_DELIMITED_JSON"],
     google_storage_bucket_iam_member.big_lake_connection_gcs_binding
   ]
 }
@@ -212,13 +212,13 @@ locals {
   file_extensions = {
     AVRO    = "avro",
     CSV     = "csv",
-    JSON    = "json",
+    NEWLINE_DELIMITED_JSON    = "json",
     PARQUET = "parquet",
   }
 }
 
 resource "google_storage_bucket_object" "dummy_file" {
-  for_each     = toset(["AVRO", "CSV", "JSON", "PARQUET"])
+  for_each     = toset(["AVRO", "CSV", "NEWLINE_DELIMITED_JSON", "PARQUET"])
   bucket       = google_storage_bucket.big_lake_data_source.id
   name         = "lang=en/test.${local.file_extensions[each.key]}"
   source       = "./test.${local.file_extensions[each.key]}"

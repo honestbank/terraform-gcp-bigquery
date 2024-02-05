@@ -12,11 +12,11 @@
 
 variable "external_data_source_format" {
   default     = "PARQUET"
-  description = "Source format of table must be AVRO, JSON, or PARQUET"
+  description = "Source format of table must be AVRO, CSV, NEWLINE_DELIMITED_JSON, or PARQUET"
   type        = string
   validation {
-    condition     = contains(["AVRO", "CSV", "JSON", "PARQUET"], var.external_data_source_format)
-    error_message = "Source format of table must be AVRO, CSV, JSON, or PARQUET"
+    condition     = contains(["AVRO", "CSV", "NEWLINE_DELIMITED_JSON", "PARQUET"], var.external_data_source_format)
+    error_message = "Source format of table must be AVRO, CSV, NEWLINE_DELIMITED_JSON, or PARQUET"
   }
 }
 
