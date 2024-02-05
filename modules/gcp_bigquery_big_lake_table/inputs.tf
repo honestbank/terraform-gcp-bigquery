@@ -19,12 +19,33 @@ variable "connection_id" {
   description = "The connection specifying the credentials to be used to read external storage for Big Lake table"
 }
 
+variable "avro_options" {
+  type = object(
+    {
+      # If is set to true, indicates whether to interpret logical types as the corresponding BigQuery data type
+      # (for example, TIMESTAMP), instead of using the raw type (for example, INTEGER).
+      use_avro_logical_types = optional(bool)
+    }
+  )
+  default     = null
+  description = "Options for AVRO data."
+}
+
 variable "csv_options" {
   type = object(
     {
-      field_delimiter = optional(string)
       # Default quote is required, see https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/bigquery_table#quote
-      quote             = optional(string, "\"")
+      quote = optional(string, "\"")
+      #  Indicates if BigQuery should accept rows that are missing trailing optional columns.
+      allow_jagged_rows = optional(bool)
+      # Indicates if BigQuery should allow quoted data sections that contain newline characters in a CSV file.
+      # The default value is false.
+      allow_quoted_newlines = optional(bool)
+      #  The character encoding of the data. The supported values are UTF-8 or ISO-8859-1.
+      encoding = optional(string)
+      # The separator for fields in a CSV file.
+      field_delimiter = optional(string)
+      # The number of rows at the top of a CSV file that BigQuery will skip when reading the data.
       skip_leading_rows = optional(number)
     }
   )
@@ -35,7 +56,9 @@ variable "csv_options" {
 variable "json_options" {
   type = object(
     {
-      encoding = optional(string, "UTF-8")
+      # The character encoding of the data. The supported values are UTF-8, UTF-16BE, UTF-16LE, UTF-32BE, and UTF-32LE.
+      # The default value is UTF-8.
+      encoding = optional(string)
     }
   )
   default     = null
@@ -45,8 +68,10 @@ variable "json_options" {
 variable "parquet_options" {
   type = object(
     {
-      enum_as_string = optional(bool, false)
-      enable_list_inference = optional(bool, false)
+      # Indicates whether to infer Parquet ENUM logical type as STRING instead of BYTES by default.
+      enum_as_string = optional(bool)
+      # Indicates whether to use schema inference specifically for Parquet LIST logical type.
+      enable_list_inference = optional(bool)
     }
   )
   default     = null
@@ -76,10 +101,10 @@ variable "description" {
 
 variable "hive_partitioning_mode" {
   type        = string
-  description = "what mode of hive partitioning to use when reading data. The following modes are supported AUTO, STRINGS, and CUSTOM"
+  description = "what mode of hive partitioning to use when reading data. The following modes are supported AUTO, CUSTOM, or STRINGS"
   validation {
-    condition     = contains(["AUTO", "STRINGS", "CUSTOM"], var.hive_partitioning_mode)
-    error_message = "Source format of table must be NEWLINE_DELIMITED_JSON, AVRO or PARQUET"
+    condition     = contains(["AUTO", "CUSTOM", "STRINGS"], var.hive_partitioning_mode)
+    error_message = "Hive partitioning mod must be AUTO, CUSTOM, or STRINGS"
   }
   default = "AUTO"
 }

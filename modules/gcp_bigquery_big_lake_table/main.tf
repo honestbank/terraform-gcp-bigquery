@@ -1,7 +1,7 @@
 locals {
   # All possible source formats: https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externaldataconfiguration
   # Schema disabled source_formats: https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/bigquery_table#schema
-  schema_disabled_source_formats = ["GOOGLE_SHEETS", "PARQUET", "AVRO", "ORC", "DATASTORE_BACKUP", "BIGTABLE"]
+  schema_disabled_source_formats = ["GOOGLE_SHEETS", "PARQUET", "AVRO", "ORC", "DATASTORE_BACKUP", "BIGTABLE", "JSON"]
   source_uris                    = length(var.source_uris) > 0 ? var.source_uris : ["${trim(var.hive_source_uri_prefix, "/")}/*"]
 }
 
@@ -19,10 +19,9 @@ resource "google_bigquery_table" "google_bigquery_table" {
     kms_key_name = var.dataset_kms_key_name
   }
 
-  # AVRO - Schema disabled
+  # Schema disabled configuration, containing AVRO, JSON, and Parquet
   dynamic "external_data_configuration" {
-    for_each = (var.source_format == "AVRO" ? toset(["external_data_configuration_avro"]) : toset([]))
-
+    for_each = (contains(local.schema_disabled_source_formats, var.source_format) == true ? toset(["external_data_configuration"]) : toset([]))
     content {
       autodetect    = var.autodetect
       connection_id = var.connection_id
@@ -30,17 +29,26 @@ resource "google_bigquery_table" "google_bigquery_table" {
       source_format = var.source_format
       source_uris   = local.source_uris
 
-      dynamic "csv_options" {
-        for_each = var.source_format == "CSV" ? toset(["csv_options"]) : toset([])
+      dynamic "avro_options" {
+        for_each = var.source_format == "AVRO" ? toset(["avro_options"]) : toset([])
         content {
-          field_delimiter   = var.csv_options.field_delimiter
-          quote             = var.csv_options.quote
-          skip_leading_rows = var.csv_options.skip_leading_rows
+          use_avro_logical_types = var.avro_options.use_avro_logical_types
         }
       }
 
-      avro_options {
-        use_avro_logical_types = var.avro_options_use_avro_logical_types
+      dynamic "json_options" {
+        for_each = var.source_format == "JSON" ? toset(["json_options"]) : toset([])
+        content {
+          encoding = var.json_options.encoding
+        }
+      }
+
+      dynamic "parquet_options" {
+        for_each = var.source_format == "PARQUET" ? toset(["parquet_options"]) : toset([])
+        content {
+          enable_list_inference = var.parquet_options.enable_list_inference
+          enum_as_string        = var.parquet_options.enum_as_string
+        }
       }
 
       hive_partitioning_options {
@@ -50,9 +58,9 @@ resource "google_bigquery_table" "google_bigquery_table" {
     }
   }
 
-  # CSV - Schema allowed
+  # Schema enabled configuration, containing CSV
   dynamic "external_data_configuration" {
-    for_each = (var.source_format == "CSV" ? toset(["external_data_configuration_csv"]) : toset([]))
+    for_each = (contains(local.schema_disabled_source_formats, var.source_format) == false ? toset(["external_data_configuration"]) : toset([]))
     content {
       autodetect    = var.autodetect
       connection_id = var.connection_id
@@ -75,61 +83,6 @@ resource "google_bigquery_table" "google_bigquery_table" {
       # external_data_configuration.schema. Otherwise, schemas must be specified
       # with this top-level field.
       schema = var.connection_id == null ? var.schema : null
-
-      csv_options {
-        quote                 = var.csv_options_quote
-        allow_jagged_rows     = var.csv_options_allow_jagged_rows
-        allow_quoted_newlines = var.csv_options_allow_quoted_newlines
-        encoding              = var.csv_options_encoding
-        field_delimiter       = var.csv_options_field_delimiter
-        skip_leading_rows     = var.csv_options_skip_leading_rows
-      }
-
-      hive_partitioning_options {
-        mode              = var.hive_partitioning_mode
-        source_uri_prefix = var.hive_source_uri_prefix
-      }
-    }
-  }
-
-  # JSON - Schema allowed
-  dynamic "external_data_configuration" {
-    for_each = (var.source_format == "NEWLINE_DELIMITED_JSON" ? toset(["external_data_configuration_json"]) : toset([]))
-    content {
-      autodetect    = var.autodetect
-      connection_id = var.connection_id
-      source_format = var.source_format
-      source_uris   = var.source_uris
-
-      # Use the exact same schema here. This one won't be changed by BigQuery, however Terraform will still detect
-      # intentional changes to this field.
-      schema = var.schema
-
-      json_options {
-        encoding = var.json_options_encoding
-      }
-
-      hive_partitioning_options {
-        mode              = var.hive_partitioning_mode
-        source_uri_prefix = var.hive_source_uri_prefix
-      }
-    }
-  }
-
-  # Parquet - Schema disabled
-  dynamic "external_data_configuration" {
-    for_each = (var.source_format == "PARQUET" ? toset(["external_data_configuration_parquet"]) : toset([]))
-
-    content {
-      autodetect    = var.autodetect
-      connection_id = var.connection_id
-      source_format = var.source_format
-      source_uris   = var.source_uris
-
-      parquet_options {
-        enum_as_string        = var.parquet_options_enum_as_string
-        enable_list_inference = var.parquet_options_enable_list_inference
-      }
 
       hive_partitioning_options {
         mode              = var.hive_partitioning_mode

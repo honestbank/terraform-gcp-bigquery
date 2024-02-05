@@ -1,7 +1,7 @@
 # [Required] The data format.
 # For CSV files, specify "CSV".
 # For Google sheets, specify "GOOGLE_SHEETS".
-# For newline-delimited JSON, specify "NEWLINE_DELIMITED_JSON".
+# For newline-delimited JSON, specify "JSON".
 # For Avro files, specify "AVRO".
 # For Google Cloud Datastore backups, specify "DATASTORE_BACKUP".
 # For Apache Iceberg tables, specify "ICEBERG".
@@ -12,11 +12,11 @@
 
 variable "external_data_source_format" {
   default     = "PARQUET"
-  description = "Source format of table must be NEWLINE_DELIMITED_JSON, AVRO or PARQUET"
+  description = "Source format of table must be AVRO, JSON, or PARQUET"
   type        = string
   validation {
-    condition     = contains(["AVRO", "CSV", "NEWLINE_DELIMITED_JSON", "PARQUET"], var.external_data_source_format)
-    error_message = "Source format of table must be NEWLINE_DELIMITED_JSON, AVRO or PARQUET"
+    condition     = contains(["AVRO", "CSV", "JSON", "PARQUET"], var.external_data_source_format)
+    error_message = "Source format of table must be AVRO, CSV, JSON, or PARQUET"
   }
 }
 

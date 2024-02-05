@@ -19,9 +19,11 @@
 
 | Name | Source | Version |
 |------|--------|---------|
+| <a name="module_avro_big_lake_table"></a> [avro\_big\_lake\_table](#module\_avro\_big\_lake\_table) | ../../modules/gcp_bigquery_big_lake_table | n/a |
 | <a name="module_big_lake_connection"></a> [big\_lake\_connection](#module\_big\_lake\_connection) | ../../modules/gcp_bigquery_big_lake_connection | n/a |
 | <a name="module_big_lake_table"></a> [big\_lake\_table](#module\_big\_lake\_table) | ../../modules/gcp_bigquery_big_lake_table | n/a |
 | <a name="module_bigquery_dataset"></a> [bigquery\_dataset](#module\_bigquery\_dataset) | ../../modules/gcp_bigquery_dataset | n/a |
+| <a name="module_json_big_lake_table"></a> [json\_big\_lake\_table](#module\_json\_big\_lake\_table) | ../../modules/gcp_bigquery_big_lake_table | n/a |
 | <a name="module_partitioned_csv_big_lake_table"></a> [partitioned\_csv\_big\_lake\_table](#module\_partitioned\_csv\_big\_lake\_table) | ../../modules/gcp_bigquery_big_lake_table | n/a |
 
 ## Resources
@@ -31,8 +33,7 @@
 | [google_service_account.owner](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/service_account) | resource |
 | [google_storage_bucket.big_lake_data_source](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/storage_bucket) | resource |
 | [google_storage_bucket_iam_member.big_lake_connection_gcs_binding](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/storage_bucket_iam_member) | resource |
-| [google_storage_bucket_object.dummy_csv_file](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/storage_bucket_object) | resource |
-| [google_storage_bucket_object.dummy_parquet_file](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/storage_bucket_object) | resource |
+| [google_storage_bucket_object.dummy_file](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/storage_bucket_object) | resource |
 | [random_id.big_lake_data_source_random_id](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/id) | resource |
 | [random_id.random_id](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/id) | resource |
 
@@ -40,7 +41,7 @@
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_external_data_source_format"></a> [external\_data\_source\_format](#input\_external\_data\_source\_format) | Source format of table must be NEWLINE\_DELIMITED\_JSON, AVRO or PARQUET | `string` | `"PARQUET"` | no |
+| <a name="input_external_data_source_format"></a> [external\_data\_source\_format](#input\_external\_data\_source\_format) | Source format of table must be AVRO, JSON, or PARQUET | `string` | `"PARQUET"` | no |
 | <a name="input_google_credentials"></a> [google\_credentials](#input\_google\_credentials) | Google Cloud Platform credentials | `string` | n/a | yes |
 | <a name="input_google_project"></a> [google\_project](#input\_google\_project) | Project that dataset will be created | `string` | n/a | yes |
 
