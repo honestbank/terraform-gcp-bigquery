@@ -18,6 +18,7 @@ resource "random_id" "random_id" {
 locals {
   CONST_GOOGLE_REGION_JAKARTA          = "asia-southeast2"
   CONST_BIGQUERY_SOURCE_FORMAT_CSV     = "CSV"
+  CONST_BIGQUERY_SOURCE_FORMAT_JSON = "JSON"
   CONST_BIGQUERY_SOURCE_FORMAT_PARQUET = "PARQUET"
 }
 
@@ -69,11 +70,43 @@ module "big_lake_table" {
   hive_source_uri_prefix = "gs://${google_storage_bucket.big_lake_data_source.name}/parquet/"
   // name of this table, the table name will be name with run number, but the friendly name will be the same with what we set here
   name = "big_lake_table"
-  // Format of source NEWLINE_DELIMITED_JSON, AVRO, PARQUET
+  // Format of source AVRO, CSV, JSON, PARQUET
   source_format = local.CONST_BIGQUERY_SOURCE_FORMAT_PARQUET
   // source uri that let Big Lake table read the external data from GCS
   source_uris = ["gs://${google_storage_bucket.big_lake_data_source.name}/${google_storage_bucket_object.dummy_parquet_file.name}"]
 
+
+  dataset_kms_key_name = module.bigquery_dataset.customer_managed_key_id
+
+  depends_on = [
+    google_storage_bucket_object.dummy_parquet_file,
+    google_storage_bucket_iam_member.big_lake_connection_gcs_binding
+  ]
+}
+
+module "json_big_lake_table" {
+  #checkov:skip=CKV_GCP_121:Deletion protection is not needed for test resources.
+  source = "../../modules/gcp_bigquery_big_lake_table"
+
+  // Let the table detect schema automatically
+  autodetect = true
+  // Connection id to Big Lake table
+  connection_id = module.big_lake_connection.id
+  // dataset id that this table will be created in
+  dataset_id = module.bigquery_dataset.id
+  // protect terraform from deleting the resource, set to false in this example because the test will need to be able to destroy it
+  deletion_protection = false
+  // description of the table
+  description = "table descriptions"
+
+  hive_partitioning_mode = "AUTO"
+  hive_source_uri_prefix = "gs://${google_storage_bucket.big_lake_data_source.name}/parquet/"
+  // name of this table, the table name will be name with run number, but the friendly name will be the same with what we set here
+  name = "big_lake_table"
+  // Format of source AVRO, CSV, JSON, PARQUET
+  source_format = local.CONST_BIGQUERY_SOURCE_FORMAT_JSON
+  // source uri that let Big Lake table read the external data from GCS
+  source_uris = ["gs://${google_storage_bucket.big_lake_data_source.name}/${google_storage_bucket_object.dummy_parquet_file.name}"]
 
   dataset_kms_key_name = module.bigquery_dataset.customer_managed_key_id
 
