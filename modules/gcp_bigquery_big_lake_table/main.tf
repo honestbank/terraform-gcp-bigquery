@@ -30,21 +30,21 @@ resource "google_bigquery_table" "google_bigquery_table" {
       source_uris   = local.source_uris
 
       dynamic "avro_options" {
-        for_each = var.source_format == "AVRO" ? toset(["avro_options"]) : toset([])
+        for_each = var.source_format == "AVRO" && var.avro_options != null ? toset(["avro_options"]) : toset([])
         content {
           use_avro_logical_types = var.avro_options.use_avro_logical_types
         }
       }
 
       dynamic "json_options" {
-        for_each = var.source_format == "JSON" ? toset(["json_options"]) : toset([])
+        for_each = var.source_format == "JSON" && var.json_options != null ? toset(["json_options"]) : toset([])
         content {
           encoding = var.json_options.encoding
         }
       }
 
       dynamic "parquet_options" {
-        for_each = var.source_format == "PARQUET" ? toset(["parquet_options"]) : toset([])
+        for_each = var.source_format == "PARQUET" && var.parquet_options != null ? toset(["parquet_options"]) : toset([])
         content {
           enable_list_inference = var.parquet_options.enable_list_inference
           enum_as_string        = var.parquet_options.enum_as_string
