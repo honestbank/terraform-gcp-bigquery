@@ -7,26 +7,29 @@ import (
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	testStructure "github.com/gruntwork-io/terratest/modules/test-structure"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/honestbank/terraform-gcp-bigquery/test_util/options"
 )
 
 func TestGCPBigQueryConnection(t *testing.T) {
 	t.Run("success", func(t *testing.T) {
 		t.Parallel()
 
-		options := getOptions(t, testStructure.CopyTerraformFolderToTemp(t, "..", "examples/gcp_bigquery_cloudsql_connection"))
+		terraformDir := testStructure.CopyTerraformFolderToTemp(t, "..", "examples/gcp_bigquery_cloudsql_connection")
+		opt := options.NewBuilder(t, terraformDir).Build()
 
-		defer terraform.Destroy(t, options)
+		defer terraform.Destroy(t, opt)
 
-		result, errorApplying := terraform.InitAndApplyE(t, options)
+		result, errorApplying := terraform.InitAndApplyE(t, opt)
 		log.Print(result)
 		if errorApplying != nil {
 			return
 		}
 		// test connection based on terraform output
-		link := terraform.Output(t, options, "bigquery_connection_link")
+		link := terraform.Output(t, opt, "bigquery_connection_link")
 		assert.NotEmpty(t, link)
 
 		// Ensure no drift on next run
-		ensureZeroResourceChange(t, options)
+		ensureZeroResourceChange(t, opt)
 	})
 }

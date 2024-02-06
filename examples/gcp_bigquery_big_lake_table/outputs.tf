@@ -13,8 +13,3 @@ output "big_lake_table_id" {
 output "big_lake_table_link" {
   value = module.big_lake_table.self_link
 }
-
-
-output "partitioned_csv_big_lake_table_id" {
-  value = module.partitioned_csv_big_lake_table.id
-}

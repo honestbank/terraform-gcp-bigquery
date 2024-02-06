@@ -10,13 +10,9 @@ import (
 	testStructure "github.com/gruntwork-io/terratest/modules/test-structure"
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/api/option"
-)
 
-func getOptions(t *testing.T, directory string) *terraform.Options {
-	return terraform.WithDefaultRetryableErrors(t, &terraform.Options{
-		TerraformDir: directory,
-	})
-}
+	"github.com/honestbank/terraform-gcp-bigquery/test_util/options"
+)
 
 func TestGCPBigQueryDataset(t *testing.T) {
 	projectName := os.Getenv("TF_VAR_google_project")
@@ -25,15 +21,16 @@ func TestGCPBigQueryDataset(t *testing.T) {
 	t.Run("success", func(t *testing.T) {
 		t.Parallel()
 
-		options := getOptions(t, testStructure.CopyTerraformFolderToTemp(t, "..", "examples/gcp_bigquery_dataset"))
+		terraformDir := testStructure.CopyTerraformFolderToTemp(t, "..", "examples/gcp_bigquery_dataset")
+		opt := options.NewBuilder(t, terraformDir).Build()
 
-		defer terraform.Destroy(t, options)
+		defer terraform.Destroy(t, opt)
 
-		terraform.InitAndApply(t, options)
+		terraform.InitAndApply(t, opt)
 
-		id := terraform.Output(t, options, "bigquery_dataset_id")
+		id := terraform.Output(t, opt, "bigquery_dataset_id")
 		assert.NotEmpty(t, id)
-		link := terraform.Output(t, options, "bigquery_dataset_link")
+		link := terraform.Output(t, opt, "bigquery_dataset_link")
 		assert.NotEmpty(t, link)
 
 		ctx := context.Background()
@@ -43,6 +40,6 @@ func TestGCPBigQueryDataset(t *testing.T) {
 		assert.Equal(t, projectName, client.Dataset(id).ProjectID)
 
 		// Ensure no drift on next run
-		ensureZeroResourceChange(t, options)
+		ensureZeroResourceChange(t, opt)
 	})
 }

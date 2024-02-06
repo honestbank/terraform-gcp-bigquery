@@ -10,6 +10,8 @@ import (
 	testStructure "github.com/gruntwork-io/terratest/modules/test-structure"
 	"github.com/stretchr/testify/assert"
 	"google.golang.org/api/option"
+
+	"github.com/honestbank/terraform-gcp-bigquery/test_util/options"
 )
 
 func TestGCPBigQueryMaskingDataset(t *testing.T) {
@@ -19,15 +21,16 @@ func TestGCPBigQueryMaskingDataset(t *testing.T) {
 	t.Run("creates 2 dataset, one for main data and another for masking datasets suffix", func(t *testing.T) {
 		t.Parallel()
 
-		options := getOptions(t, testStructure.CopyTerraformFolderToTemp(t, "..", "examples/gcp_bigquery_masked_dataset"))
+		terraformDir := testStructure.CopyTerraformFolderToTemp(t, "..", "examples/gcp_bigquery_masked_dataset")
+		opt := options.NewBuilder(t, terraformDir).Build()
 
-		defer terraform.Destroy(t, options)
+		defer terraform.Destroy(t, opt)
 
-		terraform.InitAndApply(t, options)
+		terraform.InitAndApply(t, opt)
 
-		maskedDatasetID := terraform.Output(t, options, "bigquery_masked_dataset_id")
+		maskedDatasetID := terraform.Output(t, opt, "bigquery_masked_dataset_id")
 		assert.NotEmpty(t, maskedDatasetID)
-		mainDatasetID := terraform.Output(t, options, "bigquery_main_dataset_id")
+		mainDatasetID := terraform.Output(t, opt, "bigquery_main_dataset_id")
 		assert.NotEmpty(t, mainDatasetID)
 
 		ctx := context.Background()
@@ -38,6 +41,6 @@ func TestGCPBigQueryMaskingDataset(t *testing.T) {
 		assert.Equal(t, projectName, client.Dataset(maskedDatasetID).ProjectID)
 
 		// Ensure no drift on next run
-		ensureZeroResourceChange(t, options)
+		ensureZeroResourceChange(t, opt)
 	})
 }
