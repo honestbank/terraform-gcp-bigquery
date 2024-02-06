@@ -1,8 +1,9 @@
 package test
 
 import (
-	testStructure "github.com/gruntwork-io/terratest/modules/test-structure"
 	"testing"
+
+	testStructure "github.com/gruntwork-io/terratest/modules/test-structure"
 
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	"github.com/stretchr/testify/assert"
@@ -19,12 +20,14 @@ func TestGCPBigQueryBigLakeTable(t *testing.T) {
 		terraform.InitAndApply(t, options)
 
 		// test connection based on terraform output
-		id := terraform.Output(t, options, "big_lake_table_id")
-		link := terraform.Output(t, options, "big_lake_table_link")
-
-		assert.NotEmpty(t, id)
-		assert.NotEmpty(t, link)
+		assert.NotEmpty(t, terraform.Output(t, options, "avro_big_lake_table_id"))
+		assert.NotEmpty(t, terraform.Output(t, options, "avro_big_lake_table_link"))
+		assert.NotEmpty(t, terraform.Output(t, options, "json_big_lake_table_id"))
+		assert.NotEmpty(t, terraform.Output(t, options, "json_big_lake_table_link"))
+		assert.NotEmpty(t, terraform.Output(t, options, "parquet_big_lake_table_id"))
+		assert.NotEmpty(t, terraform.Output(t, options, "parquet_big_lake_table_link"))
 		assert.NotEmpty(t, terraform.Output(t, options, "partitioned_csv_big_lake_table_id"))
+		assert.NotEmpty(t, terraform.Output(t, options, "partitioned_csv_big_lake_table_link"))
 
 		// Ensure no drift on next run
 		ensureZeroResourceChange(t, options)

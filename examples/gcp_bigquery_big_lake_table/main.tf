@@ -69,7 +69,7 @@ module "avro_big_lake_table" {
   hive_partitioning_mode = "CUSTOM"
   hive_source_uri_prefix = "gs://${google_storage_bucket.big_lake_data_source.name}/avro/{year:INTEGER}/{month:INTEGER}/{day:INTEGER}/"
   // name of this table, the table name will be name with run number, but the friendly name will be the same with what we set here
-  name = "big_lake_table"
+  name = "avro_big_lake_table"
   // Format of source AVRO, CSV, NEWLINE_DELIMITED_JSON, PARQUET
   source_format = local.CONST_BIGQUERY_SOURCE_FORMAT_AVRO
   // source uri that let Big Lake table read the external data from GCS
@@ -105,7 +105,7 @@ module "big_lake_table" {
   hive_partitioning_mode = "CUSTOM"
   hive_source_uri_prefix = "gs://${google_storage_bucket.big_lake_data_source.name}/parquet/{year:INTEGER}/{month:INTEGER}/{day:INTEGER}/"
   // name of this table, the table name will be name with run number, but the friendly name will be the same with what we set here
-  name = "big_lake_table"
+  name = "parquet_big_lake_table"
   // Format of source AVRO, CSV, NEWLINE_DELIMITED_JSON, PARQUET
   source_format = local.CONST_BIGQUERY_SOURCE_FORMAT_PARQUET
   // source uri that let Big Lake table read the external data from GCS
@@ -138,7 +138,7 @@ module "json_big_lake_table" {
   hive_partitioning_mode = "CUSTOM"
   hive_source_uri_prefix = "gs://${google_storage_bucket.big_lake_data_source.name}/json/{year:INTEGER}/{month:INTEGER}/{day:INTEGER}/"
   // name of this table, the table name will be name with run number, but the friendly name will be the same with what we set here
-  name = "big_lake_table"
+  name = "json_big_lake_table"
   // Format of source AVRO, CSV, NEWLINE_DELIMITED_JSON, PARQUET
   source_format = local.CONST_BIGQUERY_SOURCE_FORMAT_JSON
   // source uri that let Big Lake table read the external data from GCS
