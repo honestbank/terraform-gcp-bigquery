@@ -18,16 +18,13 @@ locals {
     NEWLINE_DELIMITED_JSON = "json",
     PARQUET                = "parquet",
   }
-  file_extension = local.file_extensions[var.external_data_source_format]
-  table_name = "${local.file_extension}_big_lake_table"
+  file_extension        = local.file_extensions[var.external_data_source_format]
+  google_region_jakarta = "asia-southeast2"
+  table_name            = "${local.file_extension}_big_lake_table"
 }
 
 resource "random_id" "random_id" {
   byte_length = 4
-}
-
-locals {
-  CONST_GOOGLE_REGION_JAKARTA          = "asia-southeast2"
 }
 
 // create a google service account to become dataset owner
@@ -55,7 +52,7 @@ module "bigquery_dataset" {
 module "big_lake_connection" {
   source        = "../../modules/gcp_bigquery_big_lake_connection"
   connection_id = "big_lake_connection_${random_id.random_id.hex}"
-  location      = local.CONST_GOOGLE_REGION_JAKARTA
+  location      = local.google_region_jakarta
 }
 
 module "big_lake_table" {
@@ -105,7 +102,7 @@ resource "google_storage_bucket" "big_lake_data_source" {
   #checkov:skip=CKV_GCP_62:This is an ephemeral example not meant for real-world usage.
   #checkov:skip=CKV_GCP_78:This is an ephemeral example not meant for real-world usage.
 
-  location = local.CONST_GOOGLE_REGION_JAKARTA
+  location = local.google_region_jakarta
   name     = "big_lake_data_source-${random_id.big_lake_data_source_random_id.hex}"
 }
 
