@@ -71,7 +71,7 @@ module "big_lake_table" {
   description = "table descriptions"
 
   hive_partitioning_mode = "CUSTOM"
-  hive_source_uri_prefix = "gs://${google_storage_bucket.big_lake_data_source.name}/${local.file_extension}/{year:INTEGER}/{month:INTEGER}/{day:INTEGER}/"
+  hive_source_uri_prefix = "gs://${google_storage_bucket.big_lake_data_source.name}/{year:INTEGER}/{month:INTEGER}/{day:INTEGER}/"
   // name of this table, the table name will be name with run number, but the friendly name will be the same with what we set here
   name = local.table_name
 
@@ -82,7 +82,7 @@ module "big_lake_table" {
   // Format of source AVRO, CSV, NEWLINE_DELIMITED_JSON, PARQUET
   source_format = var.external_data_source_format
   // source uri that let Big Lake table read the external data from GCS
-  source_uris = ["gs://${google_storage_bucket.big_lake_data_source.name}/${local.file_extension}/*.${local.file_extension}"]
+  source_uris = ["gs://${google_storage_bucket.big_lake_data_source.name}/*.${local.file_extension}"]
   csv_options = var.external_data_source_format == "CSV" ? {
     skip_leading_rows = 1
     field_delimiter   = "|"
@@ -103,7 +103,7 @@ resource "google_storage_bucket" "big_lake_data_source" {
   #checkov:skip=CKV_GCP_78:This is an ephemeral example not meant for real-world usage.
 
   location = local.google_region_jakarta
-  name     = "big_lake_data_source-${random_id.big_lake_data_source_random_id.hex}"
+  name     = "big_lake_data_source-${local.file_extension}-${random_id.big_lake_data_source_random_id.hex}"
 }
 
 resource "random_id" "big_lake_data_source_random_id" {
@@ -122,7 +122,7 @@ resource "google_storage_bucket_iam_member" "big_lake_connection_gcs_binding" {
 
 resource "google_storage_bucket_object" "dummy_file" {
   bucket       = google_storage_bucket.big_lake_data_source.id
-  name         = "${local.file_extension}/year=2024/month=2/day=6/test.${local.file_extension}"
+  name         = "year=2024/month=2/day=6/test.${local.file_extension}"
   source       = "./test.${local.file_extension}"
   content_type = "text/plain"
 }
