@@ -71,9 +71,12 @@ resource "google_bigquery_table" "google_bigquery_table" {
       dynamic "csv_options" {
         for_each = var.source_format == "CSV" ? toset(["csv_options"]) : toset([])
         content {
-          field_delimiter   = var.csv_options.field_delimiter
-          quote             = var.csv_options.quote
-          skip_leading_rows = var.csv_options.skip_leading_rows
+          allow_jagged_rows     = var.csv_options.allow_jagged_rows
+          allow_quoted_newlines = var.csv_options.allow_quoted_newlines
+          encoding              = var.csv_options.encoding
+          field_delimiter       = var.csv_options.field_delimiter
+          quote                 = var.csv_options.quote
+          skip_leading_rows     = var.csv_options.skip_leading_rows
         }
       }
 
