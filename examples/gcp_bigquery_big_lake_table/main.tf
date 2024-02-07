@@ -91,8 +91,7 @@ module "big_lake_table" {
   dataset_kms_key_name = module.bigquery_dataset.customer_managed_key_id
 
   depends_on = [
-    google_storage_bucket_object.dummy_file,
-    google_storage_bucket_iam_member.big_lake_connection_gcs_binding
+    google_storage_bucket_object.dummy_file
   ]
 }
 
@@ -125,4 +124,8 @@ resource "google_storage_bucket_object" "dummy_file" {
   name         = "year=2024/month=2/day=6/test.${local.file_extension}"
   source       = "./test.${local.file_extension}"
   content_type = "text/plain"
+
+  depends_on = [
+    google_storage_bucket_iam_member.big_lake_connection_gcs_binding
+  ]
 }
