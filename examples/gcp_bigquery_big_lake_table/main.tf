@@ -15,7 +15,7 @@ locals {
   file_extensions = {
     AVRO                   = "avro",
     CSV                    = "csv",
-    NEWLINE_DELIMITED_JSON = "json",
+    NEWLINE_DELIMITED_JSON = "jsonl",
     PARQUET                = "parquet",
   }
   file_extension        = local.file_extensions[var.external_data_source_format]
@@ -91,7 +91,7 @@ module "big_lake_table" {
   dataset_kms_key_name = module.bigquery_dataset.customer_managed_key_id
 
   depends_on = [
-    google_storage_bucket_object.dummy_file
+    google_storage_bucket_object.test_file
   ]
 }
 
@@ -119,7 +119,7 @@ resource "google_storage_bucket_iam_member" "big_lake_connection_gcs_binding" {
   ]
 }
 
-resource "google_storage_bucket_object" "dummy_file" {
+resource "google_storage_bucket_object" "test_file" {
   bucket       = google_storage_bucket.big_lake_data_source.id
   name         = "year=2024/month=2/day=6/test.${local.file_extension}"
   source       = "./test.${local.file_extension}"

@@ -15,7 +15,7 @@ func TestGCPBigQueryBigLakeTable(t *testing.T) {
 	formatToTableName := map[string]string{
 		"AVRO":                   "avro_big_lake_table",
 		"CSV":                    "csv_big_lake_table",
-		"NEWLINE_DELIMITED_JSON": "json_big_lake_table",
+		"NEWLINE_DELIMITED_JSON": "jsonl_big_lake_table",
 		"PARQUET":                "parquet_big_lake_table",
 	}
 
