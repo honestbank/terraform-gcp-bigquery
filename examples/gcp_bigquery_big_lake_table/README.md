@@ -14,6 +14,7 @@
 |------|---------|
 | <a name="provider_google"></a> [google](#provider\_google) | >= 4.63.1 |
 | <a name="provider_random"></a> [random](#provider\_random) | >= 3.1.2 |
+| <a name="provider_time"></a> [time](#provider\_time) | n/a |
 
 ## Modules
 
@@ -33,6 +34,7 @@
 | [google_storage_bucket_object.test_file](https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/storage_bucket_object) | resource |
 | [random_id.big_lake_data_source_random_id](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/id) | resource |
 | [random_id.random_id](https://registry.terraform.io/providers/hashicorp/random/latest/docs/resources/id) | resource |
+| [time_sleep.wait_for_5_seconds_after_creating_test_file](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/sleep) | resource |
 
 ## Inputs
 

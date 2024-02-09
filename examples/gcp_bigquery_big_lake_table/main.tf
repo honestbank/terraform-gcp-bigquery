@@ -91,7 +91,9 @@ module "big_lake_table" {
   dataset_kms_key_name = module.bigquery_dataset.customer_managed_key_id
 
   depends_on = [
-    google_storage_bucket_object.test_file
+    google_storage_bucket_iam_member.big_lake_connection_gcs_binding,
+    google_storage_bucket_object.test_file,
+    time_sleep.wait_for_5_seconds_after_creating_test_file
   ]
 }
 
@@ -113,10 +115,6 @@ resource "google_storage_bucket_iam_member" "big_lake_connection_gcs_binding" {
   bucket = google_storage_bucket.big_lake_data_source.id
   member = "serviceAccount:${module.big_lake_connection.service_account_id}"
   role   = "roles/storage.objectUser"
-
-  depends_on = [
-    google_storage_bucket.big_lake_data_source
-  ]
 }
 
 resource "google_storage_bucket_object" "test_file" {
@@ -128,4 +126,10 @@ resource "google_storage_bucket_object" "test_file" {
   depends_on = [
     google_storage_bucket_iam_member.big_lake_connection_gcs_binding
   ]
+}
+
+resource "time_sleep" "wait_for_5_seconds_after_creating_test_file" {
+  depends_on = [google_storage_bucket_object.test_file]
+
+  create_duration = "5s"
 }
