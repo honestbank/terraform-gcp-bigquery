@@ -21,8 +21,6 @@ func TestGCPBigQueryBigLakeTable(t *testing.T) {
 
 	for format, tableName := range formatToTableName {
 		t.Run(tableName, func(t *testing.T) {
-			t.Parallel()
-
 			terraformDir := testStructure.CopyTerraformFolderToTemp(t, "..", "examples/gcp_bigquery_big_lake_table")
 			opt := options.NewBuilder(t, terraformDir).
 				WithInput("external_data_source_format", format).
