@@ -8,7 +8,7 @@ import (
 
 type Builder terraform.Options
 
-func NewBuilder(t *testing.T, directory string) *Builder {
+func NewTerraformOptionsBuilder(t *testing.T, directory string) *Builder {
 	options := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
 		TerraformDir: directory,
 		Vars:         make(map[string]interface{}),
@@ -17,7 +17,7 @@ func NewBuilder(t *testing.T, directory string) *Builder {
 	return (*Builder)(options)
 }
 
-func (o *Builder) WithInput(key string, value interface{}) *Builder {
+func (o *Builder) WithInputVariables(key string, value interface{}) *Builder {
 	o.Vars[key] = value
 
 	return o

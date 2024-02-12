@@ -16,7 +16,7 @@ func TestGCPBigQueryConnection(t *testing.T) {
 		t.Parallel()
 
 		terraformDir := testStructure.CopyTerraformFolderToTemp(t, "..", "examples/gcp_bigquery_cloudsql_connection")
-		opt := options.NewBuilder(t, terraformDir).Build()
+		opt := options.NewTerraformOptionsBuilder(t, terraformDir).Build()
 
 		defer terraform.Destroy(t, opt)
 

@@ -22,7 +22,7 @@ func TestGCPBigQueryDataset(t *testing.T) {
 		t.Parallel()
 
 		terraformDir := testStructure.CopyTerraformFolderToTemp(t, "..", "examples/gcp_bigquery_dataset")
-		opt := options.NewBuilder(t, terraformDir).Build()
+		opt := options.NewTerraformOptionsBuilder(t, terraformDir).Build()
 
 		defer terraform.Destroy(t, opt)
 
