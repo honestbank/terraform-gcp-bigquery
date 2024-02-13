@@ -11,14 +11,20 @@ terraform {
   }
 }
 
-resource "random_id" "random_id" {
-  byte_length = 4
+locals {
+  file_extensions = {
+    AVRO                   = "avro",
+    CSV                    = "csv",
+    NEWLINE_DELIMITED_JSON = "jsonl",
+    PARQUET                = "parquet",
+  }
+  file_extension        = local.file_extensions[var.external_data_source_format]
+  google_region_jakarta = "asia-southeast2"
+  table_name            = "${local.file_extension}_big_lake_table"
 }
 
-locals {
-  CONST_GOOGLE_REGION_JAKARTA          = "asia-southeast2"
-  CONST_BIGQUERY_SOURCE_FORMAT_CSV     = "CSV"
-  CONST_BIGQUERY_SOURCE_FORMAT_PARQUET = "PARQUET"
+resource "random_id" "random_id" {
+  byte_length = 4
 }
 
 // create a google service account to become dataset owner
@@ -46,16 +52,15 @@ module "bigquery_dataset" {
 module "big_lake_connection" {
   source        = "../../modules/gcp_bigquery_big_lake_connection"
   connection_id = "big_lake_connection_${random_id.random_id.hex}"
-  location      = local.CONST_GOOGLE_REGION_JAKARTA
+  location      = local.google_region_jakarta
 }
 
-// creating the BigQuery Big Lake table
 module "big_lake_table" {
   #checkov:skip=CKV_GCP_121:Deletion protection is not needed for test resources.
   source = "../../modules/gcp_bigquery_big_lake_table"
 
   // Let the table detect schema automatically
-  autodetect = true
+  autodetect = var.external_data_source_format == "CSV" ? false : true
   // Connection id to Big Lake table
   connection_id = module.big_lake_connection.id
   // dataset id that this table will be created in
@@ -65,54 +70,30 @@ module "big_lake_table" {
   // description of the table
   description = "table descriptions"
 
-  hive_partitioning_mode = "AUTO"
-  hive_source_uri_prefix = "gs://${google_storage_bucket.big_lake_data_source.name}/parquet/"
-  // name of this table, the table name will be name with run number, but the friendly name will be the same with what we set here
-  name = "big_lake_table"
-  // Format of source NEWLINE_DELIMITED_JSON, AVRO, PARQUET
-  source_format = local.CONST_BIGQUERY_SOURCE_FORMAT_PARQUET
-  // source uri that let Big Lake table read the external data from GCS
-  source_uris = ["gs://${google_storage_bucket.big_lake_data_source.name}/${google_storage_bucket_object.dummy_parquet_file.name}"]
-
-
-  dataset_kms_key_name = module.bigquery_dataset.customer_managed_key_id
-
-  depends_on = [
-    google_storage_bucket_object.dummy_parquet_file,
-    google_storage_bucket_iam_member.big_lake_connection_gcs_binding
-  ]
-}
-
-module "partitioned_csv_big_lake_table" {
-  #checkov:skip=CKV_GCP_121:Deletion protection is not needed for test resources.
-  source = "../../modules/gcp_bigquery_big_lake_table"
-
-  autodetect          = false
-  connection_id       = module.big_lake_connection.id
-  dataset_id          = module.bigquery_dataset.id
-  deletion_protection = false
-  description         = "A partitioned CSV table"
-
   hive_partitioning_mode = "CUSTOM"
-  hive_source_uri_prefix = "gs://${google_storage_bucket.big_lake_data_source.name}/csv/{year:INTEGER}/{month:INTEGER}/{day:INTEGER}"
-  name                   = "partitioned_csv_big_lake_table"
-  schema = jsonencode([
+  hive_source_uri_prefix = "gs://${google_storage_bucket.big_lake_data_source.name}/{year:INTEGER}/{month:INTEGER}/{day:INTEGER}/"
+  // name of this table, the table name will be name with run number, but the friendly name will be the same with what we set here
+  name = local.table_name
+
+  schema = var.external_data_source_format == "CSV" ? jsonencode([
     { name : "column1", type : "STRING", mode : "NULLABLE" },
     { name : "column2", type : "STRING", mode : "NULLABLE" },
-  ])
-  source_format = local.CONST_BIGQUERY_SOURCE_FORMAT_CSV
-  source_uris   = ["gs://${google_storage_bucket.big_lake_data_source.name}/csv/*.csv"]
-  csv_options = {
+  ]) : null
+  // Format of source AVRO, CSV, NEWLINE_DELIMITED_JSON, PARQUET
+  source_format = var.external_data_source_format
+  // source uri that let Big Lake table read the external data from GCS
+  source_uris = ["gs://${google_storage_bucket.big_lake_data_source.name}/*.${local.file_extension}"]
+  csv_options = var.external_data_source_format == "CSV" ? {
     skip_leading_rows = 1
     field_delimiter   = "|"
-  }
-
+  } : null
 
   dataset_kms_key_name = module.bigquery_dataset.customer_managed_key_id
 
   depends_on = [
-    google_storage_bucket_object.dummy_csv_file,
-    google_storage_bucket_iam_member.big_lake_connection_gcs_binding
+    google_storage_bucket_iam_member.big_lake_connection_gcs_binding,
+    google_storage_bucket_object.test_file,
+    time_sleep.wait_for_5_seconds_after_creating_test_file
   ]
 }
 
@@ -122,8 +103,8 @@ resource "google_storage_bucket" "big_lake_data_source" {
   #checkov:skip=CKV_GCP_62:This is an ephemeral example not meant for real-world usage.
   #checkov:skip=CKV_GCP_78:This is an ephemeral example not meant for real-world usage.
 
-  location = local.CONST_GOOGLE_REGION_JAKARTA
-  name     = "big_lake_data_source-${random_id.big_lake_data_source_random_id.hex}"
+  location = local.google_region_jakarta
+  name     = "big_lake_data_source-${local.file_extension}-${random_id.big_lake_data_source_random_id.hex}"
 }
 
 resource "random_id" "big_lake_data_source_random_id" {
@@ -136,19 +117,19 @@ resource "google_storage_bucket_iam_member" "big_lake_connection_gcs_binding" {
   role   = "roles/storage.objectUser"
 }
 
-resource "google_storage_bucket_object" "dummy_parquet_file" {
+resource "google_storage_bucket_object" "test_file" {
   bucket       = google_storage_bucket.big_lake_data_source.id
-  name         = "parquet/lang=en/test.parquet"
-  source       = "./test.parquet"
+  name         = "year=2024/month=2/day=6/test.${local.file_extension}"
+  source       = "./test.${local.file_extension}"
   content_type = "text/plain"
+
+  depends_on = [
+    google_storage_bucket_iam_member.big_lake_connection_gcs_binding
+  ]
 }
 
-resource "google_storage_bucket_object" "dummy_csv_file" {
-  bucket       = google_storage_bucket.big_lake_data_source.id
-  name         = "csv/year=2023/month=12/day=18/test.csv"
-  content      = <<-EOT
-  header1|header2
-  hello|world
-  EOT
-  content_type = "text/plain"
+resource "time_sleep" "wait_for_5_seconds_after_creating_test_file" {
+  depends_on = [google_storage_bucket_object.test_file]
+
+  create_duration = "5s"
 }

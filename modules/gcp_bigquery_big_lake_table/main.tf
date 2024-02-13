@@ -1,7 +1,7 @@
 locals {
   # All possible source formats: https://cloud.google.com/bigquery/docs/reference/rest/v2/tables#externaldataconfiguration
   # Schema disabled source_formats: https://registry.terraform.io/providers/hashicorp/google/latest/docs/resources/bigquery_table#schema
-  schema_disabled_source_formats = ["GOOGLE_SHEETS", "PARQUET", "AVRO", "ORC", "DATASTORE_BACKUP", "BIGTABLE"]
+  schema_disabled_source_formats = ["GOOGLE_SHEETS", "PARQUET", "AVRO", "ORC", "DATASTORE_BACKUP", "BIGTABLE", "NEWLINE_DELIMITED_JSON"]
   source_uris                    = length(var.source_uris) > 0 ? var.source_uris : ["${trim(var.hive_source_uri_prefix, "/")}/*"]
 }
 
@@ -19,6 +19,7 @@ resource "google_bigquery_table" "google_bigquery_table" {
     kms_key_name = var.dataset_kms_key_name
   }
 
+  # Schema disabled configuration, containing AVRO, NEWLINE_DELIMITED_JSON, and Parquet
   dynamic "external_data_configuration" {
     for_each = (contains(local.schema_disabled_source_formats, var.source_format) == true ? toset(["external_data_configuration"]) : toset([]))
     content {
@@ -28,12 +29,25 @@ resource "google_bigquery_table" "google_bigquery_table" {
       source_format = var.source_format
       source_uris   = local.source_uris
 
-      dynamic "csv_options" {
-        for_each = var.source_format == "CSV" ? toset(["csv_options"]) : toset([])
+      dynamic "avro_options" {
+        for_each = var.source_format == "AVRO" && var.avro_options != null ? toset(["avro_options"]) : toset([])
         content {
-          field_delimiter   = var.csv_options.field_delimiter
-          quote             = var.csv_options.quote
-          skip_leading_rows = var.csv_options.skip_leading_rows
+          use_avro_logical_types = var.avro_options.use_avro_logical_types
+        }
+      }
+
+      dynamic "json_options" {
+        for_each = var.source_format == "NEWLINE_DELIMITED_JSON" && var.json_options != null ? toset(["json_options"]) : toset([])
+        content {
+          encoding = var.json_options.encoding
+        }
+      }
+
+      dynamic "parquet_options" {
+        for_each = var.source_format == "PARQUET" && var.parquet_options != null ? toset(["parquet_options"]) : toset([])
+        content {
+          enable_list_inference = var.parquet_options.enable_list_inference
+          enum_as_string        = var.parquet_options.enum_as_string
         }
       }
 
@@ -44,6 +58,7 @@ resource "google_bigquery_table" "google_bigquery_table" {
     }
   }
 
+  # Schema enabled configuration, containing CSV
   dynamic "external_data_configuration" {
     for_each = (contains(local.schema_disabled_source_formats, var.source_format) == false ? toset(["external_data_configuration"]) : toset([]))
     content {
@@ -56,9 +71,12 @@ resource "google_bigquery_table" "google_bigquery_table" {
       dynamic "csv_options" {
         for_each = var.source_format == "CSV" ? toset(["csv_options"]) : toset([])
         content {
-          field_delimiter   = var.csv_options.field_delimiter
-          quote             = var.csv_options.quote
-          skip_leading_rows = var.csv_options.skip_leading_rows
+          allow_jagged_rows     = var.csv_options.allow_jagged_rows
+          allow_quoted_newlines = var.csv_options.allow_quoted_newlines
+          encoding              = var.csv_options.encoding
+          field_delimiter       = var.csv_options.field_delimiter
+          quote                 = var.csv_options.quote
+          skip_leading_rows     = var.csv_options.skip_leading_rows
         }
       }
 

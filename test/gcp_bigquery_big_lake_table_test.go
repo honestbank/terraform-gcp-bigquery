@@ -1,32 +1,41 @@
 package test
 
 import (
-	testStructure "github.com/gruntwork-io/terratest/modules/test-structure"
 	"testing"
+
+	testStructure "github.com/gruntwork-io/terratest/modules/test-structure"
 
 	"github.com/gruntwork-io/terratest/modules/terraform"
 	"github.com/stretchr/testify/assert"
+
+	"github.com/honestbank/terraform-gcp-bigquery/test_util/options"
 )
 
 func TestGCPBigQueryBigLakeTable(t *testing.T) {
-	t.Run("success", func(t *testing.T) {
-		t.Parallel()
+	formatToTableName := map[string]string{
+		"AVRO":                   "avro_big_lake_table",
+		"CSV":                    "csv_big_lake_table",
+		"NEWLINE_DELIMITED_JSON": "jsonl_big_lake_table",
+		"PARQUET":                "parquet_big_lake_table",
+	}
 
-		options := getOptions(t, testStructure.CopyTerraformFolderToTemp(t, "..", "examples/gcp_bigquery_big_lake_table"))
+	for format, tableName := range formatToTableName {
+		t.Run(tableName, func(t *testing.T) {
+			terraformDir := testStructure.CopyTerraformFolderToTemp(t, "..", "examples/gcp_bigquery_big_lake_table")
+			opt := options.NewTerraformOptionsBuilder(t, terraformDir).
+				WithInputVariables("external_data_source_format", format).
+				Build()
 
-		defer terraform.Destroy(t, options)
+			defer terraform.Destroy(t, opt)
 
-		terraform.InitAndApply(t, options)
+			terraform.InitAndApply(t, opt)
 
-		// test connection based on terraform output
-		id := terraform.Output(t, options, "big_lake_table_id")
-		link := terraform.Output(t, options, "big_lake_table_link")
+			// test connection based on terraform output
+			assert.NotEmpty(t, terraform.Output(t, opt, "big_lake_table_id"))
+			assert.NotEmpty(t, terraform.Output(t, opt, "big_lake_table_link"))
 
-		assert.NotEmpty(t, id)
-		assert.NotEmpty(t, link)
-		assert.NotEmpty(t, terraform.Output(t, options, "partitioned_csv_big_lake_table_id"))
-
-		// Ensure no drift on next run
-		ensureZeroResourceChange(t, options)
-	})
+			// Ensure no drift on next run
+			ensureZeroResourceChange(t, opt)
+		})
+	}
 }
