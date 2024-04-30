@@ -1,6 +1,7 @@
 variable "google_project" {
   type        = string
-  description = "GCP project name that this dataset will be creating in."
+  default     = null
+  description = "GCP project name that this dataset will be creating in. Defaults to Google provider project"
 }
 
 variable "name" {
