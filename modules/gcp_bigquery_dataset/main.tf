@@ -5,6 +5,7 @@ resource "random_id" "random_id" {
 resource "google_kms_key_ring" "google_kms_key_ring" {
   name     = "${var.name}_${random_id.random_id.hex}"
   location = var.location
+  project  = var.google_project
 }
 
 resource "google_kms_crypto_key" "google_kms_crypto_key" {
@@ -16,6 +17,7 @@ resource "google_kms_crypto_key" "google_kms_crypto_key" {
 }
 
 data "google_bigquery_default_service_account" "google_bigquery_default_service_account" {
+  project = var.google_project
 }
 
 resource "google_kms_crypto_key_iam_member" "google_kms_crypto_key_iam_member" {
@@ -31,6 +33,7 @@ resource "google_bigquery_dataset" "google_bigquery_dataset" {
   friendly_name = var.name
   description   = var.description
   location      = var.location
+  project       = var.google_project
 
   default_encryption_configuration {
     kms_key_name = google_kms_crypto_key.google_kms_crypto_key.id
