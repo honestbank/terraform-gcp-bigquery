@@ -1,52 +1,30 @@
-name: terratest
-permissions:
-  contents: write
-  pull-requests: write
+name: "Terratest GitHub Action"
 on:
   pull_request:
-    branches:
-      - main
+    branches: [test, dev, qa, prod, main]
   push:
-    branches:
-      - main
-  workflow_dispatch:
-
+    branches: [test, dev, qa, prod, main]
 env:
-  TERRATEST_GOOGLE_CREDENTIALS: ${{ secrets.TERRATEST_GOOGLE_CREDENTIALS }}
-  GOOGLE_PROJECT: ${{ secrets.TERRATEST_GOOGLE_PROJECT }}
-  GCP_SA_EMAIL: ${{ secrets.TERRATEST_GCP_SA_EMAIL }}
-  TF_VAR_google_project: ${{ secrets.TERRATEST_GOOGLE_PROJECT }}
-  TF_VAR_google_credentials: ${{ secrets.TERRATEST_GOOGLE_CREDENTIALS }}
-  TF_VAR_shared_vpc_host_google_credentials: ${{ secrets.TERRATEST_GOOGLE_CREDENTIALS }}
+  AWS_ACCESS_KEY_ID: ${{ secrets.TERRATEST_AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_KEY: ${{ secrets.TERRATEST_AWS_SECRET_ACCESS_KEY }}
+  AWS_DEFAULT_REGION: ${{ secrets.TERRATEST_AWS_REGION }}
+  AWS_REGION: ${{ secrets.TERRATEST_AWS_REGION }}
 jobs:
   terratest:
     name: terratest
     runs-on: ubuntu-latest
     steps:
-      - name: Check out code into the Go module directory
-        uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v4
         with:
           submodules: true
-      - name: Set up Go (latest)
-        uses: actions/setup-go@v4
+      - name: Set up Go
+        uses: actions/setup-go@v5
         with:
-          go-version: '>=1.17.0'
+          go-version: 1.20
         id: go
-      - name: Login to Google Cloud
-        uses: google-github-actions/auth@v0
-        with:
-          credentials_json: ${{ env.TERRATEST_GOOGLE_CREDENTIALS }}
-      - name: Set Google Cloud project
-        run: gcloud config set project $GOOGLE_PROJECT
-      - name: Run terratest
+      - name: Run 'go test -v -timeout 60m'
         run: |
-          make test_and_cover
-      - name: Release
-        uses: cycjimmy/semantic-release-action@v4
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          extra_plugins: |
-            @semantic-release/git@10.0.1
-            @semantic-release/exec@6.0.3
-            @semantic-release/changelog@6.0.1
+          cd test
+          go mod download
+          go test -v -timeout 30m
