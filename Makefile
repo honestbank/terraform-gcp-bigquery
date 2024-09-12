@@ -1,21 +1,19 @@
+commit: docs validate
+
+docs:
+	terraform-docs --lockfile=false -c .terraform-docs.yml .
+
+init:
+	git submodule update --init --recursive
+	terraform init -upgrade
+
 lint:
 	terraform fmt --recursive
 
-validate:
-	terraform init
+tests:
+# Super long timeout since this Makefile will be used in various repositories
+	cd test; go clean -testcache; go test -v -timeout 60m
+
+validate: lint
+	terraform init --upgrade
 	terraform validate
-	terraform fmt --recursive
-
-docs:
-	terraform-docs  --lockfile=false -c .terraform-docs.yml .
-	cd examples/gcp_bigquery_big_lake_table/; terraform-docs --lockfile=false -c .terraform-docs.yml .;
-	cd examples/gcp_bigquery_cloudsql_connection/; terraform-docs --lockfile=false -c .terraform-docs.yml .;
-	cd examples/gcp_bigquery_dataset/; terraform-docs --lockfile=false -c .terraform-docs.yml .;
-	cd examples/gcp_bigquery_dataset_iam_policy/; terraform-docs --lockfile=false -c .terraform-docs.yml .;
-	cd examples/gcp_bigquery_masked_dataset/; terraform-docs --lockfile=false -c .terraform-docs.yml .;
-	cd examples/gcp_bigquery_masked_table/; terraform-docs --lockfile=false -c .terraform-docs.yml .;
-	cd examples/gcp_bigquery_table/; terraform-docs --lockfile=false -c .terraform-docs.yml .;
-	cd examples/gcp_bigquery_view/; terraform-docs --lockfile=false -c .terraform-docs.yml .;
-
-test_and_cover:
-	cd test; go test -v -race -covermode=atomic -timeout 90m ./...
