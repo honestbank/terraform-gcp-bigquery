@@ -35,10 +35,9 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_description"></a> [description](#input\_description) | A user-friendly description of the dataset | `string` | n/a | yes |
-| <a name="input_google_project"></a> [google\_project](#input\_google\_project) | GCP project name that this dataset will be creating in. | `string` | n/a | yes |
+| <a name="input_google_project"></a> [google\_project](#input\_google\_project) | GCP project name that this dataset will be creating in. Defaults to Google provider project | `string` | `null` | no |
 | <a name="input_location"></a> [location](#input\_location) | The geographic location where the dataset should reside. See official docs. <br>There are two types of locations, regional or multi-regional. A regional location is a specific geographic place, such as Tokyo, and a multi-regional location is a large geographic area, such as the United States, that contains at least two geographic places. <br>The default value is multi-regional location US. Changing this forces a new resource to be created. | `string` | n/a | yes |
 | <a name="input_name"></a> [name](#input\_name) | A descriptive name for the dataset | `string` | n/a | yes |
-| <a name="input_owner_email"></a> [owner\_email](#input\_owner\_email) | An email address of a user to grant access to. For example bigquery@bigquery-prod-343507.iam.gserviceaccount.com | `string` | n/a | yes |
 
 ## Outputs
 
