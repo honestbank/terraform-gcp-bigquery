@@ -28,7 +28,6 @@ module "bigquery_dataset" {
   name           = "dataset_${random_id.random_id.hex}"
   description    = "dataset's description"
   location       = "asia-southeast2"
-  owner_email    = google_service_account.owner.email
   google_project = var.google_project
 }
 

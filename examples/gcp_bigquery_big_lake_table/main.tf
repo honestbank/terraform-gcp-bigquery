@@ -43,8 +43,6 @@ module "bigquery_dataset" {
   description = "dataset's description"
   // location of the resource which here is Jakarta
   location = "asia-southeast2"
-  // email of the owner of the account, can be either user or service account
-  owner_email = google_service_account.owner.email
   // indicate the Google project that this resource will be created in
   google_project = var.google_project
 }
@@ -97,12 +95,13 @@ module "big_lake_table" {
   ]
 }
 
+#tfsec:ignore:google-storage-enable-ubla
+#tfsec:ignore:google-storage-bucket-encryption-customer-key
 resource "google_storage_bucket" "big_lake_data_source" {
   #checkov:skip=CKV_GCP_114:This is an ephemeral example not meant for real-world usage.
   #checkov:skip=CKV_GCP_29:This is an ephemeral example not meant for real-world usage.
   #checkov:skip=CKV_GCP_62:This is an ephemeral example not meant for real-world usage.
   #checkov:skip=CKV_GCP_78:This is an ephemeral example not meant for real-world usage.
-
   location = local.google_region_jakarta
   name     = "big_lake_data_source-${local.file_extension}-${random_id.big_lake_data_source_random_id.hex}"
 }

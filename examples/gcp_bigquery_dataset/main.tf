@@ -30,8 +30,6 @@ module "bigquery_dataset" {
   description = "dataset's description"
   // location of the resource which here is Jakarta
   location = "asia-southeast2"
-  // email of the owner of the account, can be either user or service account
-  owner_email = google_service_account.owner.email
   // indicate the Google project that this resource will be created in
   google_project = var.google_project
 }

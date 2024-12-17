@@ -25,7 +25,6 @@ module "bigquery_dataset" {
   name           = "dataset_${random_id.random_id.hex}"
   description    = "Used for testing gcp_bigquery_view"
   location       = "asia-southeast2"
-  owner_email    = google_service_account.owner.email
   google_project = var.google_project
 }
 
