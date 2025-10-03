@@ -35,6 +35,8 @@ resource "google_bigquery_dataset" "google_bigquery_dataset" {
   location      = var.location
   project       = var.google_project
 
+  default_table_expiration_ms = var.default_table_expiration_ms # by default null => no expiration
+
   default_encryption_configuration {
     kms_key_name = google_kms_crypto_key.google_kms_crypto_key.id
   }
