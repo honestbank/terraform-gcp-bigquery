@@ -23,3 +23,9 @@ variable "owner_email" {
   type        = string
   description = "An email address of a user to grant access to. For example bigquery@bigquery-prod-343507.iam.gserviceaccount.com"
 }
+
+variable "default_table_expiration_ms" {
+  description = "Optional default expiration for tables in this dataset, in milliseconds. Null = no default."
+  type        = number
+  default     = null
+}
