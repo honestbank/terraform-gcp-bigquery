@@ -30,7 +30,7 @@ No modules.
 | <a name="input_database_name"></a> [database\_name](#input\_database\_name) | Name of the database inside the CloudSQL instance, NOT the instance name / ID. | `string` | n/a | yes |
 | <a name="input_description"></a> [description](#input\_description) | Description of the BigQuery connection | `string` | `""` | no |
 | <a name="input_location"></a> [location](#input\_location) | GCP location, e.g. asia-southeast2 | `string` | `"asia-southeast2"` | no |
-| <a name="input_sql_user_credentials"></a> [sql\_user\_credentials](#input\_sql\_user\_credentials) | Credentials of the SQL User in the database inside the instance - Note: The user must exist prior to building this component. | <pre>object({<br>    user_name : string<br>    password : string<br>  })</pre> | n/a | yes |
+| <a name="input_sql_user_credentials"></a> [sql\_user\_credentials](#input\_sql\_user\_credentials) | Credentials of the SQL User in the database inside the instance - Note: The user must exist prior to building this component. | <pre>object({<br/>    user_name : string<br/>    password : string<br/>  })</pre> | n/a | yes |
 
 ## Outputs
 

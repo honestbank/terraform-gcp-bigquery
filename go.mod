@@ -1,6 +1,6 @@
 module github.com/honestbank/terraform-gcp-bigquery
 
-go 1.18
+go 1.26
 
 require (
 	cloud.google.com/go/bigquery v1.38.0
