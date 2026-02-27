@@ -55,6 +55,12 @@ module "big_lake_connection" {
   location      = local.google_region_jakarta
 }
 
+resource "time_sleep" "wait_for_big_lake_connection_service_account" {
+  depends_on = [module.big_lake_connection]
+
+  create_duration = "30s"
+}
+
 module "big_lake_table" {
   #checkov:skip=CKV_GCP_121:Deletion protection is not needed for test resources.
   source = "../../modules/gcp_bigquery_big_lake_table"
@@ -97,6 +103,8 @@ module "big_lake_table" {
   ]
 }
 
+#tfsec:ignore:google-storage-enable-ubla
+#tfsec:ignore:google-storage-bucket-encryption-customer-key
 resource "google_storage_bucket" "big_lake_data_source" {
   #checkov:skip=CKV_GCP_114:This is an ephemeral example not meant for real-world usage.
   #checkov:skip=CKV_GCP_29:This is an ephemeral example not meant for real-world usage.
@@ -115,6 +123,8 @@ resource "google_storage_bucket_iam_member" "big_lake_connection_gcs_binding" {
   bucket = google_storage_bucket.big_lake_data_source.id
   member = "serviceAccount:${module.big_lake_connection.service_account_id}"
   role   = "roles/storage.objectUser"
+
+  depends_on = [time_sleep.wait_for_big_lake_connection_service_account]
 }
 
 resource "google_storage_bucket_object" "test_file" {
