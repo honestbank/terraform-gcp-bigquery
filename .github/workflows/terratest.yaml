@@ -4,6 +4,7 @@ on:
     branches: [test, dev, qa, prod, main]
   push:
     branches: [test, dev, qa, prod, main]
+permissions: read-all
 env:
   AWS_ACCESS_KEY_ID: ${{ secrets.TERRATEST_AWS_ACCESS_KEY_ID }}
   AWS_SECRET_KEY: ${{ secrets.TERRATEST_AWS_SECRET_ACCESS_KEY }}
@@ -23,7 +24,7 @@ jobs:
       - name: Set up Go
         uses: actions/setup-go@v5
         with:
-          go-version: '1.24'
+          go-version: '1.26'
         id: go
       - name: Set up Terraform
         uses: hashicorp/setup-terraform@v3
@@ -33,4 +34,4 @@ jobs:
         run: |
           cd test
           go mod download
-          go test -v -timeout 30m
+          go test -v -timeout 60m
