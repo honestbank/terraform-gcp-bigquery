@@ -1,0 +1,8 @@
+# Trivy ignore file. This file is referenced by trivy.yaml (ignoreFile).
+# Add one finding ID per line. Give a reason for each entry.
+
+# The bucket in examples/gcp_bigquery_big_lake_table/main.tf is an ephemeral
+# example that is not for real-world usage. Checkov skips the equivalent
+# checks in that file for the same reason.
+AVD-GCP-0077
+AVD-GCP-0078
